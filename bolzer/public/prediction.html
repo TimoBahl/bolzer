@@ -32,51 +32,32 @@
 
         <ul class="space-y-4">
           <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-            <div class="text-center md:text-left font-semibold text-gray-900">
-              [Heimmannschaft]
+            <div id="homeTeamName" class="text-center md:text-left font-semibold text-gray-900">
+              Bayern
             </div>
             <div class="flex space-x-2 justify-center">
-              <input
+              <label for="homeTeamResult"></label><input
+                      id="homeTeamResult"
                 type="number"
                 class="w-16 border border-gray-300 rounded-md py-2 text-center"
                 placeholder="Tore"
               />
               <span class="text-gray-500">:</span>
-              <input
+              <label for="awayTeamResult"></label><input
+                      id="awayTeamResult"
                 type="number"
                 class="w-16 border border-gray-300 rounded-md py-2 text-center"
                 placeholder="Tore"
               />
             </div>
-            <div class="text-center md:text-right font-semibold text-gray-900">
-              [Auswärtsmannschaft]
-            </div>
-          </li>
-
-          <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-            <div class="text-center md:text-left font-semibold text-gray-900">
-              [Heimmannschaft]
-            </div>
-            <div class="flex space-x-2 justify-center">
-              <input
-                type="number"
-                class="w-16 border border-gray-300 rounded-md py-2 text-center"
-                placeholder="Tore"
-              />
-              <span class="text-gray-500">:</span>
-              <input
-                type="number"
-                class="w-16 border border-gray-300 rounded-md py-2 text-center"
-                placeholder="Tore"
-              />
-            </div>
-            <div class="text-center md:text-right font-semibold text-gray-900">
-              [Auswärtsmannschaft]
+            <div id="awayTeamName" class="text-center md:text-right font-semibold text-gray-900">
+              Frankfurt
             </div>
           </li>
         </ul>
 
         <button
+                id="submitbtn"
           class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full mt-6"
         >
           Tipps speichern
@@ -87,21 +68,6 @@
         &copy; 2025 Bolzer
       </footer>
     </div>
-    <script>
-      const axios = require("axios");
-
-      axios
-        .get("/prediciton", {
-          params: {
-            prediction: document.getElementById("prediction").value,
-          },
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    </script>
+    <script type="module" src="/../src/predictions.js"></script>
   </body>
 </html>

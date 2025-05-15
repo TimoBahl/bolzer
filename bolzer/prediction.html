@@ -1,186 +1,188 @@
 <!DOCTYPE html>
-<html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Deine Tipp-App - Tippabgabe</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Your Prediction App - Submit Predictions</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+            rel="stylesheet"
     />
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-      rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+            rel="stylesheet"
     />
     <style>
-      /* Zusätzliche Stile für die Navigationsleiste */
-      #sidebar {
-        transition: transform 0.3s ease-in-out;
-        transform: translateX(-100%);
-      }
-      #sidebar.active {
-        transform: translateX(0);
-      }
-      #main-content {
-        transition: margin-left 0.3s ease-in-out;
-        margin-left: 0;
-      }
-      #main-content.active {
-        margin-left: 256px; /* Breite der Sidebar */
-      }
-      #open-sidebar-btn {
-        position: fixed; /* Fixiert die Position des Buttons */
-        top: 0;
-        left: 0;
-        margin-left: 1rem; /* Anpassen des Abstands nach Bedarf */
-        margin-top: 1rem;
-        z-index: 40; /* Sollte über anderen Elementen liegen */
-      }
+        /* Additional styles for the navigation bar */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(-100%);
+        }
+
+        #sidebar.active {
+            transform: translateX(0);
+        }
+
+        #main-content {
+            transition: margin-left 0.3s ease-in-out;
+            margin-left: 0;
+        }
+
+        #main-content.active {
+            margin-left: 256px; /* Width of the sidebar */
+        }
+
+        #open-sidebar-btn {
+            position: fixed; /* Fixes the position of the button */
+            top: 0;
+            left: 0;
+            margin-left: 1rem; /* Adjust spacing as needed */
+            margin-top: 1rem;
+            z-index: 40; /* Should be above other elements */
+        }
     </style>
-  </head>
-  <body class="bg-gray-100 font-sans">
-    <div class="container mx-auto py-8">
-      <header class="text-center mb-8">
+</head>
+<body class="bg-gray-100 font-sans">
+<div class="container mx-auto py-8">
+    <header class="text-center mb-8">
         <h1 class="text-3xl font-bold text-gray-800">
-          Tippabgabe - Bundesliga
+            Tippabgabe - Bundesliga
         </h1>
         <p class="text-gray-600">
-          Gib hier deine Tipps für den aktuellen Spieltag ab.
+            Gib hier deine Tipps für den aktuellen Spieltag ab.
         </p>
-      </header>
-      <div class="flex">
+    </header>
+    <div class="flex">
         <aside
-          id="sidebar"
-          class="bg-gray-800 text-white w-64 fixed top-0 left-0 h-full shadow-lg z-50"
+                id="sidebar"
+                class="bg-gray-800 text-white w-64 fixed top-0 left-0 h-full shadow-lg z-50"
         >
-          <div class="p-6">
-            <h2 class="text-2xl font-semibold mb-4">Deine Tipp-App</h2>
-            <ul class="space-y-2">
-              <li>
-                <a
-                  href="home.html"
-                  class="block px-4 py-2 hover:bg-gray-700 rounded-md"
-                  >Home</a
-                >
-              </li>
-              <li>
-                <a
-                  href="leaderboard.html"
-                  id="tabelle-link"
-                  class="block px-4 py-2 hover:bg-gray-700 rounded-md"
-                  >Tabelle</a
-                >
-              </li>
-            </ul>
-          </div>
-          <button
-            id="close-sidebar-btn"
-            class="absolute top-4 right-4 text-gray-400 hover:text-white"
-          >
-            <i class="fas fa-times"></i>
-          </button>
+            <div class="p-6">
+                <h2 class="text-2xl font-semibold mb-4">Bundesliga Tipp Runde</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <a
+                                href="home.html"
+                                class="block px-4 py-2 hover:bg-gray-700 rounded-md"
+                        >Home</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                                href="leaderboard.html"
+                                id="leaderboard-link"
+                                class="block px-4 py-2 hover:bg-gray-700 rounded-md"
+                        >Tabelle</a
+                        >
+                    </li>
+                </ul>
+            </div>
+            <button
+                    id="close-sidebar-btn"
+                    class="absolute top-4 right-4 text-gray-400 hover:text-white"
+            >
+                <i class="fas fa-times"></i>
+            </button>
         </aside>
         <main
-          id="main-content"
-          class="flex-1 flex flex-col lg:flex-row gap-8 relative"
+                id="main-content"
+                class="flex-1 flex flex-col lg:flex-row gap-8 relative"
         >
-          <button
-            id="open-sidebar-btn"
-            class="absolute top-0 left-0 ml-4 mt-4 text-gray-700 z-40"
-          >
-            <i class="fas fa-bars text-2xl"></i>
-          </button>
+            <button
+                    id="open-sidebar-btn"
+                    class="absolute top-0 left-0 ml-4 mt-4 text-gray-700 z-40"
+            >
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
 
-          <div class="w-full lg:w-1/2">
-            <div class="bg-white rounded-lg shadow-md p-6">
-              <div class="mb-4">
-                <label
-                  for="spieltag-select"
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                  >Spieltag auswählen:</label
-                >
-                <select
-                  id="spieltag-select"
-                  class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                >
-                  <option value="1">Spieltag 1</option>
-                  <option value="2">Spieltag 2</option>
-                  <option value="3">Spieltag 3</option>
-                </select>
-              </div>
-              <h2
-                id="tippabgabe-title"
-                class="text-xl font-semibold text-gray-700 mb-4"
-              >
-                Tippabgabe
-              </h2>
-              <ul id="tippabgabe-liste" class="space-y-4"></ul>
-              <button
-                id="submitBtn"
-                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full mt-6"
-              >
-                Tipps speichern
-              </button>
+            <div class="w-full lg:w-1/2">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="mb-4">
+                        <label
+                                for="matchday-select"
+                                class="block text-gray-700 text-sm font-bold mb-2"
+                        >Spieltag auswählen:</label
+                        >
+                        <select
+                                id="matchday-select"
+                                class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                        </select>
+
+                    </div>
+                    <h2
+                            id="predictions-title"
+                            class="text-xl font-semibold text-gray-700 mb-4"
+                    >
+                        Tippabgabe
+                    </h2>
+                    <ul id="predictions-list" class="space-y-4"></ul>
+                    <button
+                            id="submitBtn"
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full mt-6"
+                    >
+                        Tipps speichern
+                    </button>
+                </div>
             </div>
-          </div>
-          <div class="w-full lg:w-1/2">
-            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-              <h2 id="results-Title" class="text-xl font-semibold text-gray-700 mb-4">
-                Ergebnisse
-              </h2>
-              <ul id="ergebnis-liste" class="space-y-2"></ul>
+            <div class="w-full lg:w-1/2">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 id="results-title" class="text-xl font-semibold text-gray-700 mb-4">
+                        Ergebnisse
+                    </h2>
+                    <ul id="results-list" class="space-y-2"></ul>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                        Bundesliga Tabelle
+                    </h2>
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th
+                                    scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Platz
+                            </th>
+                            <th
+                                    scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Mannschaft
+                            </th>
+                            <th
+                                    scope="col"
+                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Torverhältnis
+                            </th>
+                            <th
+                                    scope="col"
+                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                Punkte
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody
+                                id="bundesliga-table-body"
+                                class="bg-white divide-y divide-gray-200"
+                        ></tbody>
+                    </table>
+                </div>
             </div>
-            <div class="bg-white rounded-lg shadow-md p-6">
-              <h2 class="text-xl font-semibold text-gray-700 mb-4">
-                Bundesliga Tabelle
-              </h2>
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Platz
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Mannschaft
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Torverhältnis
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Punkte
-                    </th>
-                  </tr>
-                </thead>
-                <tbody
-                  id="bundesliga-tabelle-body"
-                  class="bg-white divide-y divide-gray-200"
-                ></tbody>
-              </table>
-            </div>
-          </div>
         </main>
-      </div>
-
-      <footer class="text-center mt-8 text-gray-500 text-sm">
-        &copy; 2025 Bolzer
-      </footer>
     </div>
-    <script type="module" src="src/predictions.js"></script>
-  </body>
+
+    <footer class="text-center mt-8 text-gray-500 text-sm">
+        &copy; 2025 Bolzer
+    </footer>
+</div>
+<script type="module" src="src/predictions.js"></script>
+</body>
 </html>

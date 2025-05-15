@@ -134,6 +134,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   await renderPredictionForm();
   setupPredictionSave();
 });
+<<<<<<< HEAD
 
 // onAuthStateChanged(auth, (user) => {
 //   if (user) {
@@ -170,3 +171,23 @@ window.addEventListener("DOMContentLoaded", async () => {
 //     });
 //   }
 // });
+=======
+const sidebar = document.getElementById("sidebar");
+const openSidebarBtn = document.getElementById("open-sidebar-btn");
+const closeSidebarBtn = document.getElementById("close-sidebar-btn");
+const mainContent = document.getElementById("main-content");
+const tabelleLink = document.getElementById("tabelle-link");
+
+openSidebarBtn.addEventListener("click", () => {
+  sidebar.classList.add("active");
+  mainContent.classList.add("active");
+});
+
+closeSidebarBtn.addEventListener("click", () => {
+  sidebar.classList.remove("active");
+  mainContent.classList.remove("active");
+});
+
+
+
+>>>>>>> 9a6282d63e765e29600db82dd90a6b9c95319019

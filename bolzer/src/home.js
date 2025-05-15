@@ -2,7 +2,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "./firebase";
 
 document.getElementById("leaderboardBtn").addEventListener("click", () => {
-  window.location.href = "./leaderboard.html";
+  window.location.href = "../leaderboard.html";
 });
 
 document.getElementById("predictionBtn").addEventListener("click", () => {

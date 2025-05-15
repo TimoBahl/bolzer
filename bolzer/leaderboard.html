@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deine Tipp-App - Leaderboard</title>
+  <link
+          href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+          rel="stylesheet"
+  />
+  <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          rel="stylesheet"
+  />
+  <style>
+    /* Zusätzliche Stile für die Navigationsleiste */
+    #sidebar {
+      transition: transform 0.3s ease-in-out;
+      transform: translateX(-100%);
+    }
+    #sidebar.active {
+      transform: translateX(0);
+    }
+    #main-content {
+      transition: margin-left 0.3s ease-in-out;
+      margin-left: 0;
+    }
+    #main-content.active {
+      margin-left: 256px; /* Breite der Sidebar */
+    }
+    #open-sidebar-btn {
+      position: fixed; /* Fixiert die Position des Buttons */
+      top: 0;
+      left: 0;
+      margin-left: 1rem; /* Anpassen des Abstands nach Bedarf */
+      margin-top: 1rem;
+      z-index: 40; /* Sollte über anderen Elementen liegen */
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+<div class="container mx-auto py-8">
+  <header class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">Leaderboard</h1>
+    <p class="text-gray-600">Die aktuelle Rangliste aller Tipper.</p>
+  </header>
+
+  <div class="flex">
+    <aside
+            id="sidebar"
+            class="bg-gray-800 text-white w-64 fixed top-0 left-0 h-full shadow-lg z-50"
+    >
+      <div class="p-6">
+        <h2 class="text-2xl font-semibold mb-4">Deine Tipp-App</h2>
+        <ul class="space-y-2">
+          <li>
+            <a
+                    href="home.html"
+                    class="block px-4 py-2 hover:bg-gray-700 rounded-md"
+            >Home</a
+            >
+          </li>
+          <li>
+            <a
+                    href="prediction.html"
+                    id="tabelle-link"
+                    class="block px-4 py-2 hover:bg-gray-700 rounded-md"
+            >Tipp Abgabe</a
+            >
+          </li>
+        </ul>
+      </div>
+      <button
+              id="close-sidebar-btn"
+              class="absolute top-4 right-4 text-gray-400 hover:text-white"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </aside>
+
+    <main id="main-content" class="flex-1 relative">
+      <button
+              id="open-sidebar-btn"
+              class="absolute top-0 left-0 ml-4 mt-4 text-gray-700 z-40"
+      >
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+
+      <div class="bg-white rounded-lg shadow-md overflow-x-auto p-6">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+          <tr>
+            <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Platz
+            </th>
+            <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Spieler
+            </th>
+            <th
+                    scope="col"
+                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Punkte
+            </th>
+          </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">1</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                Max Mustermann
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right">
+              <div class="text-sm text-gray-900">125</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">2</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                Anna Schmidt
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right">
+              <div class="text-sm text-gray-900">118</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">3</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                Peter Müller
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right">
+              <div class="text-sm text-gray-900">112</div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <footer class="text-center mt-8 text-gray-500 text-sm">
+    &copy; 2025 Bolzer
+  </footer>
+</div>
+<script type="module" src="src/leaderboard.js"></script>
+
+</body>
+</html>

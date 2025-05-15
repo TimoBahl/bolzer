@@ -1,13 +1,17 @@
-import { defineConfig } from 'vite';
+import { resolve } from "path";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
-    outDir: 'dist',  // Zielordner für den Build (Standard: dist)
+    outDir: "dist", // Zielordner für den Build (Standard: dist)
     rollupOptions: {
-      input: './index.html'  // Die HTML-Datei, die als Einstiegspunkt dient
-    }
+      input: {
+        main: resolve(__dirname, "./index.html"),
+        home: resolve(__dirname, "./home.html"),
+      },
+    },
   },
   server: {
-    open: true,  // Öffnet den Browser automatisch, wenn der Server startet
-  }
+    open: true, // Öffnet den Browser automatisch, wenn der Server startet
+  },
 });

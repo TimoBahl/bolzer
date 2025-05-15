@@ -166,7 +166,7 @@ function getSpieltagData(spieltag) {
 
 // Funktion, um die Bundesliga-Tabelle abzurufen und anzuzeigen
 function getBundesligaTable() {
-  const url = `https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?id=${ligaId}`;
+  const url = `https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=4331&s=2024-2025`;
 
   fetch(url)
           .then(response => {
@@ -187,7 +187,7 @@ function getBundesligaTable() {
                           <tr>
                               <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-900">${team.intRank}</div></td>
                               <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${team.strTeam}</div></td>
-                              <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.strGoalDifference}</div></td>
+                              <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.intGoalsFor} : ${team.intGoalsAgainst}</div></td>
                               <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.intPoints}</div></td>
                           </tr>
                       `;

@@ -12,6 +12,7 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
           rel="stylesheet"
   />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     /* Zusätzliche Stile für die Navigationsleiste */
     #sidebar {
@@ -93,50 +94,20 @@
       <div class="w-full lg:w-1/2">
         <div class="bg-white rounded-lg shadow-md p-6">
           <div class="mb-4">
-            <label for="spieltag-select"></label><select
+            <label for="spieltag-select" class="block text-gray-700 text-sm font-bold mb-2">Spieltag auswählen:</label>
+            <select
                     id="spieltag-select"
-                    class="shadow appearance-none border rounded w-auto py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="1">Spieltag 1</option>
               <option value="2">Spieltag 2</option>
               <option value="3">Spieltag 3</option>
             </select>
           </div>
-          <h2 class="text-xl font-semibold text-gray-700 mb-4">
-            Tippabgabe [Spieltagsnummer]
+          <h2 id="tippabgabe-title"  class="text-xl font-semibold text-gray-700 mb-4">
+            Tippabgabe
           </h2>
           <ul id="tippabgabe-liste" class="space-y-4">
-            <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-              <div
-                      id="homeTeamName"
-                      class="text-center md:text-left font-semibold text-gray-900"
-              >
-                Bayern
-              </div>
-              <div class="flex space-x-2 justify-center">
-                <label for="homeTeamResult"></label
-                ><input
-                      id="homeTeamResult"
-                      type="number"
-                      class="w-16 border border-gray-300 rounded-md py-2 text-center"
-                      placeholder="Tore"
-              />
-                <span class="text-gray-500">:</span>
-                <label for="awayTeamResult"></label
-                ><input
-                      id="awayTeamResult"
-                      type="number"
-                      class="w-16 border border-gray-300 rounded-md py-2 text-center"
-                      placeholder="Tore"
-              />
-              </div>
-              <div
-                      id="awayTeamName"
-                      class="text-center md:text-right font-semibold text-gray-900"
-              >
-                Frankfurt
-              </div>
-            </li>
           </ul>
           <button
                   id="submitBtn"
@@ -153,12 +124,6 @@
             Ergebnisse [Aktueller Spieltag]
           </h2>
           <ul id="ergebnis-liste" class="space-y-2">
-            <li class="flex justify-between items-center">
-                  <span class="font-semibold text-gray-900"
-                  >Bayern - Frankfurt</span
-                  >
-              <span class="text-gray-700">2:1</span>
-            </li>
           </ul>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6">
@@ -198,280 +163,6 @@
                     id="bundesliga-tabelle-body"
                     class="bg-white divide-y divide-gray-200"
             >
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">1</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  Bayer Leverkusen
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">60:24</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">90</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">2</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  VfB Stuttgart
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">78:39</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">73</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">3</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  Bayern München
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">94:45</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">72</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">4</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">RB Leipzig</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">64:39</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">65</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">5</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  Borussia Dortmund
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">68:52</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">63</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">6</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  Eintracht Frankfurt
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">51:50</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">47</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">7</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  TSG Hoffenheim
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">60:66</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">46</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">8</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  FC Heidenheim
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">50:55</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">42</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">9</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  Werder Bremen
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">48:54</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">42</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">10</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">SC Freiburg</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">45:58</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">42</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">11</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">FC Augsburg</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">58:60</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">39</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">12</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">VfL Wolfsburg</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">54:48</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">37</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">13</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  1. FC Union Berlin
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">33:58</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">33</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">14</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  Borussia Mönchengladbach
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">56:67</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">31</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">15</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">1. FC Köln</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">28:60</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">27</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">16</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">1. FSV Mainz 05</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">39:56</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">25</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">17</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">VfL Bochum</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">37:74</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">24</div>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">18</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">
-                  SV Darmstadt 98
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">31:86</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right">
-                <div class="text-sm text-gray-900">17</div>
-              </td>
-            </tr>
             </tbody>
           </table>
         </div>
@@ -484,5 +175,176 @@
   </footer>
 </div>
 <script type="module" src="src/predictions.js"></script>
+<script>
+  const spieltagSelect = document.getElementById('spieltag-select');
+  const ergebnisListe = document.getElementById('ergebnis-liste');
+  const bundesligaTabelleBody = document.getElementById('bundesliga-tabelle-body');
+  const tippabgabeListe = document.getElementById('tippabgabe-liste');
+  const tippabgabeTitle = document.getElementById('tippabgabe-title');
+  const submitBtn = document.getElementById('submitBtn');
+  const sidebar = document.getElementById("sidebar");
+  const openSidebarBtn = document.getElementById("open-sidebar-btn");
+  const closeSidebarBtn = document.getElementById("close-sidebar-btn");
+  const mainContent = document.getElementById("main-content");
+  const tabelleLink = document.getElementById("tabelle-link");
+
+  openSidebarBtn.addEventListener("click", () => {
+    sidebar.classList.add("active");
+    mainContent.classList.add("active");
+  });
+
+  closeSidebarBtn.addEventListener("click", () => {
+    sidebar.classList.remove("active");
+    mainContent.classList.remove("active");
+  });
+
+  tabelleLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    // Hier sollte die Logik für den Seitenwechsel zur Tabelle stehen
+    alert("Zur Tabelle Seite weiterleiten");
+  });
+
+  // Bundesliga ID für TheSportsDB ist 4331
+  const ligaId = 4331;
+  let aktuellerSpieltag = 1; // Standardwert
+
+  spieltagSelect.addEventListener('change', () => {
+    aktuellerSpieltag = parseInt(spieltagSelect.value);
+    tippabgabeTitle.textContent = `Tippabgabe [Spieltag ${aktuellerSpieltag}]`;
+    ergebnisListe.innerHTML = '<li class="text-gray-500 italic">Lade Ergebnisse...</li>';
+    tippabgabeListe.innerHTML = ''; //clear
+    getSpieltagData(aktuellerSpieltag);
+
+  });
+
+  function getSpieltagData(spieltag) {
+    const url = `https://www.thesportsdb.com/api/v1/json/3/eventsround.php?id=${ligaId}&r=${spieltag}`;
+
+    fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Netzwerkfehler: Konnte Daten nicht abrufen.');
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (data.events === null) {
+                ergebnisListe.innerHTML = '<li class="text-red-500 text-center font-semibold">Keine Spiele gefunden für diesen Spieltag.</li>';
+                tippabgabeListe.innerHTML = '<li class="text-red-500 text-center font-semibold">Keine Spiele gefunden für diesen Spieltag.</li>';
+                return;
+              }
+
+              let ergebnisHtml = '';
+              let tippabgabeHtml = '';
+              data.events.forEach(spiel => {
+                ergebnisHtml += `
+                            <li class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
+                                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                                    <span class="font-semibold text-gray-900">${spiel.strHomeTeam}</span>
+                                    <span class="text-gray-600">-</span>
+                                    <span class="font-semibold text-gray-900">${spiel.strAwayTeam}</span>
+                                </div>
+                                 <div class="text-gray-700 text-sm">
+                                  ${spiel.intHomeScore !== null && spiel.intAwayScore !== null
+                        ? `<span class="font-semibold">${spiel.intHomeScore} : ${spiel.intAwayScore}</span><br>`
+                        : ''
+                }
+                                    ${spiel.strDate} ${spiel.strTime}
+                                </div>
+                            </li>
+                        `;
+
+                tippabgabeHtml += `
+                        <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" data-game-id="${spiel.idEvent}">
+                            <div class="text-center md:text-left font-semibold text-gray-900">${spiel.strHomeTeam}</div>
+                            <div class="flex space-x-2 justify-center">
+                                <input type="number" class="homeTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore" value="">
+                                <span class="text-gray-500">:</span>
+                                <input type="number" class="awayTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore" value="">
+                            </div>
+                            <div class="text-center md:text-right font-semibold text-gray-900">${spiel.strAwayTeam}</div>
+                        </li>
+                    `;
+              });
+              ergebnisListe.innerHTML = ergebnisHtml;
+              tippabgabeListe.innerHTML = tippabgabeHtml;
+            })
+            .catch(error => {
+              console.error('Fehler beim Abrufen der Daten:', error);
+              ergebnisListe.innerHTML = `<li class="text-red-500 text-center">Ein Fehler ist aufgetreten: ${error.message}</li>`;
+              tippabgabeListe.innerHTML = `<li class="text-red-500 text-center">Ein Fehler ist aufgetreten: ${error.message}</li>`;
+
+            });
+  }
+
+
+  // Funktion, um die Bundesliga-Tabelle abzurufen und anzuzeigen
+  function getBundesligaTable() {
+    const url = `https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?id=${ligaId}`;
+
+    fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Netzwerkfehler: Konnte Tabelle nicht abrufen.');
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (!data.table) {
+                bundesligaTabelleBody.innerHTML = '<tr><td colspan="4" class="text-gray-500 text-center py-4">Tabelle konnte nicht geladen werden.</td></tr>';
+                return;
+              }
+
+              let tabellenHtml = '';
+              data.table.forEach(team => {
+                tabellenHtml += `
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-900">${team.intRank}</div></td>
+                                <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${team.strTeam}</div></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.strGoalDifference}</div></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.intPoints}</div></td>
+                            </tr>
+                        `;
+              });
+              bundesligaTabelleBody.innerHTML = tabellenHtml;
+            })
+            .catch(error => {
+              console.error('Fehler beim Abrufen der Tabelle:', error);
+              bundesligaTabelleBody.innerHTML = `<tr><td colspan="4" class="text-red-500 text-center py-4">Ein Fehler ist aufgetreten: ${error.message}</td></tr>`;
+            });
+  }
+
+  // Rufe die Tabelle beim Laden der Seite ab
+  getBundesligaTable();
+  getSpieltagData(aktuellerSpieltag);
+
+  submitBtn.addEventListener('click', () => {
+    const tipps = [];
+    const tippInputs = tippabgabeListe.querySelectorAll('li');
+    tippInputs.forEach(spiel => {
+      const spielId = spiel.dataset.gameId;
+      const homeTeamResultInput = spiel.querySelector('.homeTeamResult');
+      const awayTeamResultInput = spiel.querySelector('.awayTeamResult');
+      const homeTeamResult = homeTeamResultInput.value.trim();
+      const awayTeamResult = awayTeamResultInput.value.trim();
+
+      if (homeTeamResult === '' || awayTeamResult === '') {
+        alert('Bitte gib für jedes Spiel einen Tipp ab.');
+        return; // Verhindert das Speichern unvollständiger Tipps
+      }
+
+      tipps.push({
+        spielId: spielId,
+        homeTeamResult: parseInt(homeTeamResult),
+        awayTeamResult: parseInt(awayTeamResult),
+      });
+    });
+
+    // Hier erfolgt die Speicherung der Tipps (z.B. per fetch an den Server)
+    console.log('Tipps:', tipps);
+    alert('Tipps wurden gespeichert!');
+    // Optional: Hier könnte eine Weiterleitung oder Aktualisierung der Seite erfolgen
+  });
+</script>
 </body>
 </html>

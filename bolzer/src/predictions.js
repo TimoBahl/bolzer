@@ -67,6 +67,7 @@ const ergebnisListe = document.getElementById('ergebnis-liste');
 const bundesligaTabelleBody = document.getElementById('bundesliga-tabelle-body');
 const tippabgabeListe = document.getElementById('tippabgabe-liste');
 const tippabgabeTitle = document.getElementById('tippabgabe-title');
+const resultsTitle = document.getElementById('results-Title');
 const submitBtn = document.getElementById('submitBtn');
 const sidebar = document.getElementById("sidebar");
 const openSidebarBtn = document.getElementById("open-sidebar-btn");
@@ -96,7 +97,8 @@ let aktuellerSpieltag = 1; // Standardwert
 
 spieltagSelect.addEventListener('change', () => {
   aktuellerSpieltag = parseInt(spieltagSelect.value);
-  tippabgabeTitle.textContent = `Tippabgabe [Spieltag ${aktuellerSpieltag}]`;
+  tippabgabeTitle.textContent = `Tippabgabe: Spieltag ${aktuellerSpieltag}`;
+  resultsTitle.textContent = `Ergebnisse: Spieltag ${aktuellerSpieltag}`;
   ergebnisListe.innerHTML = '<li class="text-gray-500 italic">Lade Ergebnisse...</li>';
   tippabgabeListe.innerHTML = ''; //clear
   getSpieltagData(aktuellerSpieltag);
@@ -135,7 +137,7 @@ function getSpieltagData(spieltag) {
                       ? `<span class="font-semibold">${spiel.intHomeScore} : ${spiel.intAwayScore}</span><br>`
                       : ''
               }
-                                  ${spiel.strDate} ${spiel.strTime}
+                                  ${spiel.dateEvent} / ${spiel.strTime}
                               </div>
                           </li>
                       `;

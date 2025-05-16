@@ -1,13 +1,13 @@
-import {auth, db} from "./firebase.js";
-import {ref, set, push} from "firebase/database";
-import {onAuthStateChanged} from "firebase/auth";
+import { auth, db } from "./firebase.js";
+import { ref, set, push } from "firebase/database";
+import { onAuthStateChanged } from "firebase/auth";
 
 console.log("Script wurde geladen!");
 
 const spieltagSelect = document.getElementById("spieltag-select");
 const ergebnisListe = document.getElementById("ergebnis-liste");
 const bundesligaTabelleBody = document.getElementById(
-    "bundesliga-tabelle-body"
+  "bundesliga-tabelle-body"
 );
 const tippabgabeListe = document.getElementById("tippabgabe-liste");
 const tippabgabeTitle = document.getElementById("tippabgabe-title");
@@ -15,6 +15,7 @@ const sidebar = document.getElementById("sidebar");
 const openSidebarBtn = document.getElementById("open-sidebar-btn");
 const closeSidebarBtn = document.getElementById("close-sidebar-btn");
 const mainContent = document.getElementById("main-content");
+// const tabelleLink = document.getElementById("tabelle-link");
 
 
 openSidebarBtn.addEventListener("click", () => {
@@ -26,7 +27,6 @@ closeSidebarBtn.addEventListener("click", () => {
     sidebar.classList.remove("active");
     mainContent.classList.remove("active");
 });
-
 
 // Bundesliga ID für TheSportsDB ist 4331
 const ligaId = 4331;
@@ -161,12 +161,64 @@ function getSpieltagData(aktuellerSpieltag) {
                         ? `<span class="font-semibold">${spiel.intHomeScore} : ${spiel.intAwayScore}</span><br>`
                         : ""
                 }
+                
+spieltagSelect.addEventListener("change", () => {
+  aktuellerSpieltag = parseInt(spieltagSelect.value);
+  tippabgabeTitle.textContent = `Tippabgabe [Spieltag ${aktuellerSpieltag}]`;
+  ergebnisListe.innerHTML =
+    '<li class="text-gray-500 italic">Lade Ergebnisse...</li>';
+  tippabgabeListe.innerHTML = ""; //clear
+  getSpieltagData(aktuellerSpieltag);
+});
+
+// Fuktion um den Bundesliga Spieltag anzuzeigen
+function getSpieltagData(spieltag) {
+  const url = `https://www.thesportsdb.com/api/v1/json/3/eventsround.php?id=${ligaId}&r=${spieltag}`;
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Netzwerkfehler: Konnte Daten nicht abrufen.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.events === null) {
+        ergebnisListe.innerHTML =
+          '<li class="text-red-500 text-center font-semibold">Keine Spiele gefunden für diesen Spieltag.</li>';
+        tippabgabeListe.innerHTML =
+          '<li class="text-red-500 text-center font-semibold">Keine Spiele gefunden für diesen Spieltag.</li>';
+        return;
+      }
+
+      let ergebnisHtml = "";
+      let tippabgabeHtml = "";
+      data.events.forEach((spiel) => {
+        ergebnisHtml += `
+                          <li class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
+                              <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                                  <span class="font-semibold text-gray-900">${
+                                    spiel.strHomeTeam
+                                  }</span>
+                                  <span class="text-gray-600">-</span>
+                                  <span class="font-semibold text-gray-900">${
+                                    spiel.strAwayTeam
+                                  }</span>
+                              </div>
+                                <div class="text-gray-700 text-sm">
+                                ${
+                                  spiel.intHomeScore !== null &&
+                                  spiel.intAwayScore !== null
+                                    ? `<span class="font-semibold">${spiel.intHomeScore} : ${spiel.intAwayScore}</span><br>`
+                                    : ""
+                                }
                                   ${spiel.strDate} ${spiel.strTime}
                               </div>
                           </li>
                       `;
 
                 tippabgabeHtml += `
+        tippabgabeHtml += `
                       <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" data-game-id="${spiel.idEvent}">
                           <div id="homeTeam-${spiel.idEvent}" class="text-center md:text-left font-semibold text-gray-900">${spiel.strHomeTeam}</div>
                           <div class="flex space-x-2 justify-center">
@@ -224,9 +276,19 @@ function getBundesligaTable() {
             bundesligaTabelleBody.innerHTML = `<tr><td colspan="4" class="text-red-500 text-center py-4">An error occurred: ${error.message}</td></tr>`;
         });
 }
+      });
+      ergebnisListe.innerHTML = ergebnisHtml;
+      tippabgabeListe.innerHTML = tippabgabeHtml;
+    })
+    .catch((error) => {
+      console.error("Fehler beim Abrufen der Daten:", error);
+      ergebnisListe.innerHTML = `<li class="text-red-500 text-center">Ein Fehler ist aufgetreten: ${error.message}</li>`;
+      tippabgabeListe.innerHTML = `<li class="text-red-500 text-center">Ein Fehler ist aufgetreten: ${error.message}</li>`;
+    });
+}
 
 // Rufe die Tabelle beim Laden der Seite ab
-getBundesligaTable();
+// getBundesligaTable();
 getSpieltagData(aktuellerSpieltag);
 
 document
@@ -286,4 +348,27 @@ function writePredictionsToDB() {
                 alert("Fehler beim Speichern der Tipps.");
             });
     });
+}
+    if (predictions.length === 0) {
+      alert("Bitte gib mindestens einen Tipp ab.");
+      return;
+    }
+
+    const spieltag = document.getElementById("spieltag-select").value;
+
+    const predictionsObj = {};
+    predictions.forEach((prediction) => {
+      predictionsObj[prediction.gameId] = prediction;
+    });
+
+    const userPredictionsRef = ref(db, `predictions/spieltag_${spieltag}/${userId}`);
+    set(userPredictionsRef, predictionsObj)
+      .then(() => {
+        alert("Tipps erfolgreich gespeichert!");
+      })
+      .catch((error) => {
+        console.error("Fehler beim Speichern:", error);
+        alert("Fehler beim Speichern der Tipps.");
+      });
+  });
 }

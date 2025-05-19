@@ -115,85 +115,85 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function loadUserPredictions(spieltag) {
-    return new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                console.log("Benutzer ist nicht angemeldet.");
-                resolve({});
-                return;
-            }
-            const userId = user.uid;
-            const predictionsRef = ref(
-                db,
-                `predictions/spieltag_${spieltag}/${userId}`
-            );
+  return new Promise((resolve, reject) => {
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.log("Benutzer ist nicht angemeldet.");
+        resolve({});
+        return;
+      }
+      const userId = user.uid;
+      const predictionsRef = ref(
+        db,
+        `predictions/spieltag_${spieltag}/${userId}`
+      );
 
-            try {
-                const snapshot = await get(predictionsRef);
-                if (snapshot.exists()) {
-                    resolve(snapshot.val());
-                } else {
-                    resolve({});
-                }
-            } catch (error) {
-                console.error("Fehler beim Laden der Vorhersagen:", error);
-                reject(error);
-            }
-        });
+      try {
+        const snapshot = await get(predictionsRef);
+        if (snapshot.exists()) {
+          resolve(snapshot.val());
+        } else {
+          resolve({});
+        }
+      } catch (error) {
+        console.error("Fehler beim Laden der Vorhersagen:", error);
+        reject(error);
+      }
     });
+  });
 }
 
 function disablePredictionInputs() {
-    const predictionInputs = document.querySelectorAll(
-        "#tippabgabe-liste input[type='number']"
-    );
-    predictionInputs.forEach((input) => {
-        input.disabled = true;
-    });
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.classList.add("opacity-50", "cursor-not-allowed");
-    }
+  const predictionInputs = document.querySelectorAll(
+    "#tippabgabe-liste input[type='number']"
+  );
+  predictionInputs.forEach((input) => {
+    input.disabled = true;
+  });
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.classList.add("opacity-50", "cursor-not-allowed");
+  }
 }
 
 function enablePredictionInputs() {
-    const predictionInputs = document.querySelectorAll(
-        "#tippabgabe-liste input[type='number']"
-    );
-    predictionInputs.forEach((input) => {
-        input.disabled = false;
-    });
-    if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
-    }
+  const predictionInputs = document.querySelectorAll(
+    "#tippabgabe-liste input[type='number']"
+  );
+  predictionInputs.forEach((input) => {
+    input.disabled = false;
+  });
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
+  }
 }
 
 async function updateTippabgabeForm(spieltag) {
-    const userPredictions = await loadUserPredictions(spieltag);
-    const predictionItems = document.querySelectorAll("#tippabgabe-liste li");
+  const userPredictions = await loadUserPredictions(spieltag);
+  const predictionItems = document.querySelectorAll("#tippabgabe-liste li");
 
-    predictionItems.forEach((item) => {
-        const gameId = item.getAttribute("data-game-id");
-        const prediction = userPredictions ?.[gameId];
+  predictionItems.forEach((item) => {
+    const gameId = item.getAttribute("data-game-id");
+    const prediction = userPredictions?.[gameId];
 
-        const homeScoreInput = item.querySelector(".homeTeamResult");
-        const awayScoreInput = item.querySelector(".awayTeamResult");
+    const homeScoreInput = item.querySelector(".homeTeamResult");
+    const awayScoreInput = item.querySelector(".awayTeamResult");
 
-        if (homeScoreInput) {
-            homeScoreInput.value = prediction?.homeScore || "";
-        }
-        if (awayScoreInput) {
-            awayScoreInput.value = prediction?.awayScore || "";
-        }
-    });
-
-    // Überprüfen, ob der ausgewählte Spieltag älter als der nächste ist
-    if (naechsterSpieltagGlobal !== null && spieltag < naechsterSpieltagGlobal) {
-        disablePredictionInputs();
-    } else {
-        enablePredictionInputs();
+    if (homeScoreInput) {
+      homeScoreInput.value = prediction?.homeScore || "";
     }
+    if (awayScoreInput) {
+      awayScoreInput.value = prediction?.awayScore || "";
+    }
+  });
+
+  // Überprüfen, ob der ausgewählte Spieltag älter als der nächste ist
+  if (naechsterSpieltagGlobal !== null && spieltag < naechsterSpieltagGlobal) {
+    disablePredictionInputs();
+  } else {
+    enablePredictionInputs();
+  }
 }
 
 spieltagSelect.addEventListener("change", () => {
@@ -203,7 +203,7 @@ spieltagSelect.addEventListener("change", () => {
     '<li class="text-gray-500 italic">Lade Ergebnisse...</li>';
   tippabgabeListe.innerHTML = ""; // Clear existing list
   getSpieltagData(aktuellerSpieltag).then(() => {
-      updateTippabgabeForm(aktuellerSpieltag); // Nach dem Laden der Spiele die Tipps laden und Eingabefelder aktivieren/deaktivieren
+    updateTippabgabeForm(aktuellerSpieltag); // Nach dem Laden der Spiele die Tipps laden und Eingabefelder aktivieren/deaktivieren
   });
 });
 
@@ -211,24 +211,24 @@ spieltagSelect.addEventListener("change", () => {
 async function getSpieltagData(spieltag) {
   const url = `https://www.thesportsdb.com/api/v1/json/3/eventsround.php?id=${ligaId}&r=${spieltag}`;
 
-    try {
-        const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Netzwerkfehler: Konnte Daten nicht abrufen.");
-      }
-      const data = await response.json();
-      if (data.events === null) {
-        ergebnisListe.innerHTML =
-          '<li class="text-red-500 text-center font-semibold">Keine Spiele gefunden für diesen Spieltag.</li>';
-        tippabgabeListe.innerHTML =
-          '<li class="text-red-500 text-center font-semibold">Keine Spiele gefunden für diesen Spieltag.</li>';
-        return;
-      }
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Netzwerkfehler: Konnte Daten nicht abrufen.");
+    }
+    const data = await response.json();
+    if (data.events === null) {
+      ergebnisListe.innerHTML =
+        '<li class="text-red-500 text-center font-semibold">Keine Spiele gefunden für diesen Spieltag.</li>';
+      tippabgabeListe.innerHTML =
+        '<li class="text-red-500 text-center font-semibold">Keine Spiele gefunden für diesen Spieltag.</li>';
+      return;
+    }
 
-      let ergebnisHtml = "";
-      let tippabgabeHtml = "";
-      data.events.forEach((spiel) => {
-        ergebnisHtml += `
+    let ergebnisHtml = "";
+    let tippabgabeHtml = "";
+    data.events.forEach((spiel) => {
+      ergebnisHtml += `
                           <li class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
                               <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                                   <span class="font-semibold text-gray-900">${
@@ -236,8 +236,8 @@ async function getSpieltagData(spieltag) {
                                   }</span>
                                   <span class="text-gray-600">-</span>
                                 <span class="font-semibold text-gray-900">${
-                                    spiel.strAwayTeam
-                                  }</span>
+                                  spiel.strAwayTeam
+                                }</span>
                               </div>
                                 <div class="text-gray-700 text-sm">
                                 ${
@@ -250,7 +250,7 @@ async function getSpieltagData(spieltag) {
                               </div>
                           </li>
                       `;
-        tippabgabeHtml += `
+      tippabgabeHtml += `
                       <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" data-game-id="${spiel.idEvent}">
                           <div id="homeTeam-${spiel.idEvent}" class="text-center md:text-left font-semibold text-gray-900">${spiel.strHomeTeam}</div>
                           <div class="flex space-x-2 justify-center">
@@ -261,14 +261,14 @@ async function getSpieltagData(spieltag) {
                           <div id="awayTeam-${spiel.idEvent}" class="text-center md:text-right font-semibold text-gray-900">${spiel.strAwayTeam}</div>
                       </li>
                   `;
-      });
-      ergebnisListe.innerHTML = ergebnisHtml;
-      tippabgabeListe.innerHTML = tippabgabeHtml;
-    } catch (error) {
-      console.error("Fehler beim Abrufen der Daten:", error);
-      ergebnisListe.innerHTML = `<li class="text-red-500 text-center">Ein Fehler ist aufgetreten: ${error.message}</li>`;
-      tippabgabeListe.innerHTML = `<li class="text-red-500 text-center">Ein Fehler ist aufgetreten: ${error.message}</li>`;
-    }
+    });
+    ergebnisListe.innerHTML = ergebnisHtml;
+    tippabgabeListe.innerHTML = tippabgabeHtml;
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Daten:", error);
+    ergebnisListe.innerHTML = `<li class="text-red-500 text-center">Ein Fehler ist aufgetreten: ${error.message}</li>`;
+    tippabgabeListe.innerHTML = `<li class="text-red-500 text-center">Ein Fehler ist aufgetreten: ${error.message}</li>`;
+  }
 }
 
 // Funktion, um die Bundesliga-Tabelle abzurufen und anzuzeigen
@@ -374,9 +374,9 @@ function writePredictionsToDB() {
 
 getBundesligaTable();
 getSpieltagData(aktuellerSpieltag).then(() => {
-    // Initial die Tipps für den ersten geladenen Spieltag laden
-    const initialSpieltag = spieltagSelect.value;
-    if (initialSpieltag) {
-        updateTippabgabeForm(initialSpieltag);
-    }
+  // Initial die Tipps für den ersten geladenen Spieltag laden
+  const initialSpieltag = spieltagSelect.value;
+  if (initialSpieltag) {
+    updateTippabgabeForm(initialSpieltag);
+  }
 });

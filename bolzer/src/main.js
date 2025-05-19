@@ -1,57 +1,27 @@
 import { auth } from "./firebase"; // Importiere Firebase Auth
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import * as firebaseui from "firebaseui";
+import "firebaseui/dist/firebaseui.css";
+import { EmailAuthProvider, GoogleAuthProvider } from "firebase/auth";
 
-// Zeige das Modal beim Klicken auf den Registrieren-Button
-document.getElementById("registerBtn").addEventListener("click", () => {
-  document.getElementById("registerModal").classList.remove("hidden");
-});
+// FirebaseUI-Konfiguration
+var uiConfig = {
+  callbacks: {
+    signInSuccessWithAuthResult: function (authResult) {
+      console.log("User signed in:", authResult.user);
+      return true;
+    },
+    uiShown: function () {
+      document.getElementById("loader").style.display = "none";
+    },
+  },
+  signInFlow: "popup",
+  signInOptions: [
+    EmailAuthProvider.PROVIDER_ID,
+    GoogleAuthProvider.PROVIDER_ID,
+  ],
+  signInSuccessUrl: "/home.html",
+};
 
-// Schließe das Register-Modal
-document.getElementById("closeRegisterModal").addEventListener("click", () => {
-  document.getElementById("registerModal").classList.add("hidden");
-});
-
-// Registriere den User mit E-Mail und Passwort
-document
-  .getElementById("submitRegister")
-  .addEventListener("click", async () => {
-    const email = document.getElementById("registerEmail").value;
-    const password = document.getElementById("registerPassword").value;
-
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      alert("Registrierung erfolgreich!");
-      window.location.href = "./home.html";
-      document.getElementById("registerModal").classList.add("hidden");
-    } catch (err) {
-      alert("Fehler: " + err.message);
-    }
-  });
-
-// Zeige das Modal beim Klicken auf den Login-Button
-document.getElementById("loginBtn").addEventListener("click", () => {
-  document.getElementById("loginModal").classList.remove("hidden");
-});
-
-// Schließe das Modal
-document.getElementById("closeLoginModal").addEventListener("click", () => {
-  document.getElementById("loginModal").classList.add("hidden");
-});
-
-// Login des Users mit E-Mail und Passwort
-document.getElementById("submitLogin").addEventListener("click", async () => {
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
-
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    alert("Login erfolgreich!");
-    window.location.href = "/home.html"; // Zielseite für eingeloggte Nutzer
-    document.getElementById("loginModal").classList.add("hidden");
-  } catch (err) {
-    alert("Fehler beim Login: " + err.message);
-  }
-});
+// FirebaseUI-Widget initialisieren
+const ui = new firebaseui.auth.AuthUI(auth);
+ui.start("#firebaseui-auth-container", uiConfig);

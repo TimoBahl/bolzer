@@ -123,10 +123,7 @@ async function loadUserPredictions(spieltag) {
         return;
       }
       const userId = user.uid;
-      const predictionsRef = ref(
-        db,
-        `predictions/spieltag_${spieltag}/${userId}`
-      );
+      const predictionsRef = ref(db, `predictions/${spieltag}/${userId}`);
 
       try {
         const snapshot = await get(predictionsRef);
@@ -357,10 +354,7 @@ function writePredictionsToDB() {
     });
 
     // Schreibe alle Tipps unter /predictions/{userId}/{spieltag}/
-    const userPredictionsRef = ref(
-      db,
-      `predictions/spieltag_${spieltag}/${userId}`
-    );
+    const userPredictionsRef = ref(db, `predictions/${spieltag}/${userId}`);
     set(userPredictionsRef, predictionsObj)
       .then(() => {
         alert("Tipps erfolgreich gespeichert!");

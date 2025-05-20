@@ -25,4 +25,4 @@ jobs:
       - name: Run fetch script
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: node functions/fetchSpieltage.js
+        run: node bolzer/functions/fetchSpieltage.js

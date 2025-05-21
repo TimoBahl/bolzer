@@ -1,11 +1,11 @@
-const axios = require("axios");
-const admin = require("firebase-admin");
+import { get } from "axios";
+import { initializeApp, credential as _credential, database, app } from "firebase-admin";
 
 // Service Account aus GitHub Secret laden
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+initializeApp({
+  credential: _credential.cert(serviceAccount),
   databaseURL: "https://bolzer-8d71d-default-rtdb.europe-west1.firebasedatabase.app",
 });
 
@@ -14,14 +14,14 @@ async function getSpieltage() {
   const url = `https://api.openligadb.de/getmatchdata/bl1/2024`;
 
     try {
-      const response = await axios.get(url);
-      await admin.database().ref(`/spieltag_new/`).set(response.data);
+      const response = await get(url);
+      await database().ref(`/spieltag_new/`).set(response.data);
       console.log(`Spieltage gespeichert.`);
     } catch (error) {
       console.error(`Fehler bei Spieltage:`, error.message);
     }
   }
 
-  await admin.app().delete();
+  await app().delete();
 
 getSpieltage();

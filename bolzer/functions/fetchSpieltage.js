@@ -18,7 +18,15 @@ async function getSpieltage() {
 
     try {
       const response = await axios.get(url);
-      await admin.database().ref(`/spieltag_new/${spieltag}`).set(response.data);
+      await admin.database().ref(`/spieltag_new/${spieltag}`).set(
+        response.data.map(match => {
+          matchID: match.matchID;
+          matchDateTime: match.matchDateTime;
+          homeTeam: match.team1.teamName;
+          awayTeam: match.team2.teamName;
+          homeTeamScore: match.matchResults[1].pointsTeam1;
+          awayTeamScore: match.matchResults[2].pointsTeam2;
+        }));
       console.log(`Spieltage gespeichert.`);
     } catch (error) {
       console.error(`Fehler bei Spieltage:`, error.message);

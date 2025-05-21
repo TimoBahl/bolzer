@@ -15,6 +15,9 @@ const openSidebarBtn = document.getElementById("open-sidebar-btn");
 const closeSidebarBtn = document.getElementById("close-sidebar-btn");
 const mainContent = document.getElementById("main-content");
 
+const ligaId = 4331
+let naechsterSpieltagGlobal = null;
+
 openSidebarBtn.addEventListener("click", () => {
   sidebar.classList.add("active");
   mainContent.classList.add("active");
@@ -25,9 +28,9 @@ closeSidebarBtn.addEventListener("click", () => {
   mainContent.classList.remove("active");
 });
 
+//Lade Spieltage aus der Firebase Realtime Database
 async function getSpieltageFromDB() {
-  const db = getDatabase();
-  const spieltagRef = ref(db, "spieltag");
+  const spieltagRef = ref(db, "spieltage");
   const snapshot = await get(spieltagRef);
 
   if (!snapshot.exists()) {
@@ -40,12 +43,15 @@ async function getSpieltageFromDB() {
     .map((key) => parseInt(key))
     .sort((a, b) => a - b);
 
-  return spieltagKeys;
+  return spieltagKeys; //returnt die Spieltage (1, 2, 3, 4, usw.)
 }
 
+// Befüllt das Dropdown Menü zum auswählen der Spieltage
+let aktuellerSpieltag = null
+
 async function populateSpieltagDropdown() {
-  const selectElement = document.getElementById("spieltag-select");
-  selectElement.innerHTML = "";
+  const selectElement = document.getElementById("spieltag-select"); //Holt sich das HTML-Element mit der ID spieltag-select
+  selectElement.innerHTML = ""; //Leert den Inhalt des Dropdowns, um alte Optionen zu entfernen
 
   const spieltagKeys = await getSpieltageFromDB();
 
@@ -55,104 +61,23 @@ async function populateSpieltagDropdown() {
     option.textContent = `Spieltag ${spieltag}`;
     selectElement.appendChild(option);
   });
-}
 
+  if (spieltagKeys.length > 0) {
+    aktuellerSpieltag = spieltagKeys[0];
+    selectElement.value = aktuellerSpieltag;
+    tippabgabeTitle.textContent = `Tippabgabe [Spieltag ${aktuellerSpieltag}]`;
+
+    await getSpieltagDataFromDB(aktuellerSpieltag); //Holt die Spieldaten für den aktuellen Spieltag
+    updateTippabgabeForm(aktuellerSpieltag); //Aktualisiert das Tippformular
+  }  
+}
+//Wartet bis die HTML seite geladen ist bevor die Funktion populateSpieltagDropdown() ausgeführt wird.
 document.addEventListener("DOMContentLoaded", () => {
   populateSpieltagDropdown();
 });
 
-async function loadUserPredictions(spieltag) {
-  return new Promise((resolve, reject) => {
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        console.log("Benutzer ist nicht angemeldet.");
-        resolve({});
-        return;
-      }
-      const userId = user.uid;
-      const predictionsRef = ref(db, `predictions/${spieltag}/${userId}`);
-
-      try {
-        const snapshot = await get(predictionsRef);
-        if (snapshot.exists()) {
-          resolve(snapshot.val());
-        } else {
-          resolve({});
-        }
-      } catch (error) {
-        console.error("Fehler beim Laden der Vorhersagen:", error);
-        reject(error);
-      }
-    });
-  });
-}
-
-function disablePredictionInputs() {
-  const predictionInputs = document.querySelectorAll(
-    "#tippabgabe-liste input[type='number']"
-  );
-  predictionInputs.forEach((input) => {
-    input.disabled = true;
-  });
-  if (submitBtn) {
-    submitBtn.disabled = true;
-    submitBtn.classList.add("opacity-50", "cursor-not-allowed");
-  }
-}
-
-function enablePredictionInputs() {
-  const predictionInputs = document.querySelectorAll(
-    "#tippabgabe-liste input[type='number']"
-  );
-  predictionInputs.forEach((input) => {
-    input.disabled = false;
-  });
-  if (submitBtn) {
-    submitBtn.disabled = false;
-    submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
-  }
-}
-
-async function updateTippabgabeForm(spieltag) {
-  const userPredictions = await loadUserPredictions(spieltag);
-  const predictionItems = document.querySelectorAll("#tippabgabe-liste li");
-
-  predictionItems.forEach((item) => {
-    const gameId = item.getAttribute("data-game-id");
-    const prediction = userPredictions?.[gameId];
-
-    const homeScoreInput = item.querySelector(".homeTeamResult");
-    const awayScoreInput = item.querySelector(".awayTeamResult");
-
-    if (homeScoreInput) {
-      homeScoreInput.value = prediction?.homeScore || "";
-    }
-    if (awayScoreInput) {
-      awayScoreInput.value = prediction?.awayScore || "";
-    }
-  });
-
-  // Überprüfen, ob der ausgewählte Spieltag älter als der nächste ist
-  if (naechsterSpieltagGlobal !== null && spieltag < naechsterSpieltagGlobal) {
-    disablePredictionInputs();
-  } else {
-    enablePredictionInputs();
-  }
-}
-
-spieltagSelect.addEventListener("change", () => {
-  aktuellerSpieltag = parseInt(spieltagSelect.value);
-  tippabgabeTitle.textContent = `Tippabgabe [Spieltag ${aktuellerSpieltag}]`;
-  ergebnisListe.innerHTML =
-    '<li class="text-gray-500 italic">Lade Ergebnisse...</li>';
-  tippabgabeListe.innerHTML = ""; // Clear existing list
-  getSpieltagDataFromDB(aktuellerSpieltag).then(() => {
-    updateTippabgabeForm(aktuellerSpieltag); // Nach dem Laden der Spiele die Tipps laden und Eingabefelder aktivieren/deaktivieren
-  });
-});
-
+// Funktion, umm das Ergebnisse Feld mit den Daten aus der Firebase Realtime Database zu befüllen 
 async function getSpieltagDataFromDB(spieltag) {
-  const db = getDatabase();
   const spieltagRef = ref(db, `spieltage/${spieltag}`);
 
   try {
@@ -257,6 +182,96 @@ function getBundesligaTable() {
     });
 }
 
+async function loadUserPredictions(spieltag) {
+  return new Promise((resolve, reject) => {
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.log("Benutzer ist nicht angemeldet.");
+        resolve({});
+        return;
+      }
+      const userId = user.uid;
+      const predictionsRef = ref(db, `predictions/${spieltag}/${userId}`);
+
+      try {
+        const snapshot = await get(predictionsRef);
+        if (snapshot.exists()) {
+          resolve(snapshot.val());
+        } else {
+          resolve({});
+        }
+      } catch (error) {
+        console.error("Fehler beim Laden der Vorhersagen:", error);
+        reject(error);
+      }
+    });
+  });
+}
+
+function disablePredictionInputs() {
+  const predictionInputs = document.querySelectorAll(
+    "#tippabgabe-liste input[type='number']"
+  );
+  predictionInputs.forEach((input) => {
+    input.disabled = true;
+  });
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.classList.add("opacity-50", "cursor-not-allowed");
+  }
+}
+
+function enablePredictionInputs() {
+  const predictionInputs = document.querySelectorAll(
+    "#tippabgabe-liste input[type='number']"
+  );
+  predictionInputs.forEach((input) => {
+    input.disabled = false;
+  });
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
+  }
+}
+
+async function updateTippabgabeForm(spieltag) {
+  const userPredictions = await loadUserPredictions(spieltag);
+  const predictionItems = document.querySelectorAll("#tippabgabe-liste li");
+
+  predictionItems.forEach((item) => {
+    const gameId = item.getAttribute("data-game-id");
+    const prediction = userPredictions?.[gameId];
+
+    const homeScoreInput = item.querySelector(".homeTeamResult");
+    const awayScoreInput = item.querySelector(".awayTeamResult");
+
+    if (homeScoreInput) {
+      homeScoreInput.value = prediction?.homeScore || "";
+    }
+    if (awayScoreInput) {
+      awayScoreInput.value = prediction?.awayScore || "";
+    }
+  });
+
+  // Überprüfen, ob der ausgewählte Spieltag älter als der nächste ist
+  if (naechsterSpieltagGlobal !== null && spieltag < naechsterSpieltagGlobal) {
+    disablePredictionInputs();
+  } else {
+    enablePredictionInputs();
+  }
+}
+
+spieltagSelect.addEventListener("change", () => {
+  aktuellerSpieltag = parseInt(spieltagSelect.value);
+  tippabgabeTitle.textContent = `Tippabgabe [Spieltag ${aktuellerSpieltag}]`;
+  ergebnisListe.innerHTML =
+    '<li class="text-gray-500 italic">Lade Ergebnisse...</li>';
+  tippabgabeListe.innerHTML = ""; // Clear existing list
+  getSpieltagDataFromDB(aktuellerSpieltag).then(() => {
+    updateTippabgabeForm(aktuellerSpieltag); // Nach dem Laden der Spiele die Tipps laden und Eingabefelder aktivieren/deaktivieren
+  });
+});
+
 document
   .getElementById("submitBtn")
   .addEventListener("click", writePredictionsToDB);
@@ -319,7 +334,7 @@ function writePredictionsToDB() {
 }
 
 getBundesligaTable();
-getSpieltagData(aktuellerSpieltag).then(() => {
+getSpieltagDataFromDB(aktuellerSpieltag).then(() => {
   // Initial die Tipps für den ersten geladenen Spieltag laden
   const initialSpieltag = spieltagSelect.value;
   if (initialSpieltag) {

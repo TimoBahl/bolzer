@@ -5,7 +5,7 @@ import admin from "firebase-admin";
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
 admin.initializeApp({
-  credential: _credential.cert(serviceAccount),
+  credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://bolzer-8d71d-default-rtdb.europe-west1.firebasedatabase.app",
 });
 

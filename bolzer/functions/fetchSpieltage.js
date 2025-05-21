@@ -1,5 +1,4 @@
 import { get } from "axios";
-import { initializeApp, credential as _credential, database, app } from "firebase-admin";
 
 // Service Account aus GitHub Secret laden
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);

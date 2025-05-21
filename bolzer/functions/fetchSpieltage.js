@@ -33,10 +33,10 @@ async function getSpieltage() {
         return acc;
       }, {});
 
-      await admin.database().ref(`/spieltag_new/${spieltag}`).set(formattedMatches);
+      await admin.database().ref(`/spieltage/${spieltag}`).set(formattedMatches);
       console.log(`Spieltage gespeichert für Spieltag ${spieltag}.`);
     } catch (error) {
-      console.error(`Fehler bei Spieltage ${spieltag}:`, error.message);
+      console.error(`Fehler bei Spieltag ${spieltag}:`, error.message);
     }
   }
 

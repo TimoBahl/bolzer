@@ -15,7 +15,7 @@ async function getSpieltage() {
 
     try {
       const response = await axios.get(url);
-      await database().ref(`/spieltag_new/`).set(response.data);
+      await admin.database().ref(`/spieltag_new/`).set(response.data);
       console.log(`Spieltage gespeichert.`);
     } catch (error) {
       console.error(`Fehler bei Spieltage:`, error.message);

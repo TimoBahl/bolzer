@@ -1,0 +1,28 @@
+name: Fetch Tabelle from API
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # Täglich um 03:00 UTC
+  workflow_dispatch:     # Manuell triggerbar
+
+jobs:
+  fetch-and-store:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./bolzer/functions
+
+      - name: Run fetch script
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: node bolzer/functions/fetchBundesligaTabelle.js

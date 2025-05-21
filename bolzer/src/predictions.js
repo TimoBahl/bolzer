@@ -146,40 +146,37 @@ async function getSpieltagDataFromDB(spieltag) {
 }
 
 // Funktion, um die Bundesliga-Tabelle abzurufen und anzuzeigen
-function getBundesligaTable() {
-  const url = `https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=${ligaId}&s=2024-2025`;
+async function getBundesligaTableFromDB() {
+  const tableRef = ref(db, 'tabelle');
 
-  fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network error: Could not retrieve table.");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (!data.table) {
-        bundesligaTabelleBody.innerHTML =
-          '<tr><td colspan="4" class="text-gray-500 text-center py-4">Table could not be loaded.</td></tr>';
-        return;
-      }
+  try {
+    const snapshot = await get(tableRef);
 
-      let tableHtml = "";
-      data.table.forEach((team) => {
-        tableHtml += `
-                          <tr>
-                              <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-900">${team.intRank}</div></td>
-                              <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${team.strTeam}</div></td>
-                              <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.intGoalsFor} : ${team.intGoalsAgainst}</div></td>
-                              <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.intPoints}</div></td>
-                          </tr>
-                      `;
-      });
-      bundesligaTabelleBody.innerHTML = tableHtml;
-    })
-    .catch((error) => {
-      console.error("Error fetching table:", error);
-      bundesligaTabelleBody.innerHTML = `<tr><td colspan="4" class="text-red-500 text-center py-4">An error occurred: ${error.message}</td></tr>`;
+    if (!snapshot.exists()) {
+      bundesligaTabelleBody.innerHTML = '<tr><td colspan="4" class="text-gray-500 text-center py-4">Keine Tabellendaten gefunden.</td></tr>';
+      return;
+    }
+
+    const teamsData = snapshot.val();
+
+    let tableHtml = '';
+    Object.keys(teamsData).sort((a, b) => a - b).forEach(rank => {
+      const team = teamsData[rank];
+      tableHtml += `
+        <tr>
+          <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-900">${rank}</div></td>
+          <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${team.teamName}</div></td>
+          <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.goals} : ${team.opponentGoals}</div></td>
+          <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.points}</div></td>
+        </tr>
+      `;
     });
+
+    bundesligaTabelleBody.innerHTML = tableHtml;
+  } catch (error) {
+    console.error('Fehler beim Laden der Tabelle:', error);
+    bundesligaTabelleBody.innerHTML = `<tr><td colspan="4" class="text-red-500 text-center py-4">Fehler: ${error.message}</td></tr>`;
+  }
 }
 
 async function loadUserPredictions(spieltag) {
@@ -333,7 +330,7 @@ function writePredictionsToDB() {
   });
 }
 
-getBundesligaTable();
+getBundesligaTableFromDB();
 getSpieltagDataFromDB(aktuellerSpieltag).then(() => {
   // Initial die Tipps für den ersten geladenen Spieltag laden
   const initialSpieltag = spieltagSelect.value;

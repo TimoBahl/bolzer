@@ -22,7 +22,8 @@ async function getTabelle() {
       tabelleObj[platz] = {
         teamName: team.teamName,
         points: team.points,
-        diff: team.goalDiff,
+        teamGoals: team.goals,
+        opponentGoals: team.opponentGoals,
         matches: team.matches
       };
     });

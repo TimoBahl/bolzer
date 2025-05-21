@@ -16,7 +16,7 @@ async function getTabelle() {
   try {
     const response = await axios.get(url);
 
-    await admin.database().ref(`/tabelle`).set(response);
+    await admin.database().ref(`/tabelle`).set(response.data);
     console.log(`Bundesliga Tabelle gespeichert.`);
   } catch (error) {
     console.error(`Fehler beim speicher der Bundesliga Tabelle:`, error.message);

@@ -22,9 +22,8 @@ async function getSpieltage() {
       console.log(`Spieltage gespeichert.`);
     } catch (error) {
       console.error(`Fehler bei Spieltage:`, error.message);
-    } finally {
-      await admin.app().delete();
     }
   }
+  await admin.app().delete();
 }
 getSpieltage();

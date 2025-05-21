@@ -21,7 +21,9 @@ async function getTabelle() {
       const platz = index + 1;
       tabelleObj[platz] = {
         teamName: team.teamName,
-        // weitere Felder, die du willst
+        points: team.points,
+        diff: team.goalDiff,
+        matches: team.matches
       };
     });
 

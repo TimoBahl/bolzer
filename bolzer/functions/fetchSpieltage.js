@@ -19,30 +19,27 @@ async function getSpieltage() {
 
     try {
       const response = await axios.get(url);
-      await admin
-        .database()
-        .ref(`/spieltag_new/${spieltag}`)
-        .set(
-          response.data.map((match) => {
-            const endResult = match.matchResults?.find(
-              (r) => r.resultTypeID === 2
-            );
-            acc[match.matchID] = {
-              matchID: match.matchID,
-              matchDateTime: match.matchDateTime,
-              homeTeam: match.team1?.teamName,
-              awayTeam: match.team2?.teamName,
-              homeTeamScore: endResult?.pointsTeam1 ?? null,
-              awayTeamScore: endResult?.pointsTeam2 ?? null,
-            };
-            return acc;
-          })
-        );
-      console.log(`Spieltage gespeichert.`);
+
+      const formattedMatches = response.data.reduce((acc, match) => {
+        const endResult = match.matchResults?.find(r => r.resultTypeID === 2);
+        acc[match.matchID] = {
+          matchID: match.matchID,
+          matchDateTime: match.matchDateTime,
+          homeTeam: match.team1?.teamName,
+          awayTeam: match.team2?.teamName,
+          homeTeamScore: endResult?.pointsTeam1 ?? null,
+          awayTeamScore: endResult?.pointsTeam2 ?? null,
+        };
+        return acc;
+      }, {});
+
+      await admin.database().ref(`/spieltag_new/${spieltag}`).set(formattedMatches);
+      console.log(`Spieltage gespeichert für Spieltag ${spieltag}.`);
     } catch (error) {
-      console.error(`Fehler bei Spieltage:`, error.message);
+      console.error(`Fehler bei Spieltage ${spieltag}:`, error.message);
     }
   }
+
   await admin.app().delete();
 }
 getSpieltage();

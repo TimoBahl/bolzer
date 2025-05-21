@@ -1,8 +1,6 @@
 import { auth, db } from "./firebase.js";
-import { ref, set, get } from "firebase/database"; // 'get' hinzufügen
+import { ref, set, get } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
-
-console.log("Script wurde geladen!");
 
 const spieltagSelect = document.getElementById("spieltag-select");
 const ergebnisListe = document.getElementById("ergebnis-liste");
@@ -11,7 +9,7 @@ const bundesligaTabelleBody = document.getElementById(
 );
 const tippabgabeListe = document.getElementById("tippabgabe-liste");
 const tippabgabeTitle = document.getElementById("tippabgabe-title");
-const submitBtn = document.getElementById("submitBtn"); // Referenz zum Submit-Button
+const submitBtn = document.getElementById("submitBtn");
 const sidebar = document.getElementById("sidebar");
 const openSidebarBtn = document.getElementById("open-sidebar-btn");
 const closeSidebarBtn = document.getElementById("close-sidebar-btn");
@@ -27,87 +25,36 @@ closeSidebarBtn.addEventListener("click", () => {
   mainContent.classList.remove("active");
 });
 
-// Bundesliga ID für TheSportsDB ist 4331
-const ligaId = 4331;
-let aktuellerSpieltag = 1; // Standardwert
-let naechsterSpieltagGlobal = null; // Variable, um den nächsten Spieltag global zu speichern
+async function getSpieltageFromDB() {
+  const db = getDatabase();
+  const spieltagRef = ref(db, "spieltag");
+  const snapshot = await get(spieltagRef);
 
-async function getSpieltage() {
-  const matchDays = 34;
-  const gespielteSpieltage = [];
-  let naechsterSpieltag = null;
-  const heute = new Date();
-
-  for (let spieltag = 1; spieltag <= matchDays; spieltag++) {
-    const url = `https://www.thesportsdb.com/api/v1/json/3/eventsround.php?id=4331&r=${spieltag}&s=2024-2025`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Netzwerkfehler: Konnte Spieltage nicht abrufen.");
-      }
-      const data = await response.json();
-      if (!data.events) {
-        continue;
-      }
-
-      for (const spiel of data.events) {
-        const spielDatum = new Date(spiel.dateEvent);
-        const round = parseInt(spiel.intRound);
-
-        if (!isNaN(round)) {
-          if (spielDatum < heute) {
-            gespielteSpieltage.push(round);
-            break;
-          } else if (spielDatum > heute) {
-            naechsterSpieltag = round;
-            break;
-          }
-        }
-      }
-
-      if (naechsterSpieltag !== null) {
-        break;
-      }
-    } catch (error) {
-      console.error("Fehler beim Abrufen der Spieltage:", error);
-      alert(
-        "Fehler beim Abrufen der Spieltage. Bitte versuchen Sie es später noch einmal."
-      );
-      return { gespielteSpieltage: [], naechsterSpieltag: null };
-    }
+  if (!snapshot.exists()) {
+    console.error("Keine Spieltage gefunden.");
+    return [];
   }
 
-  const eindeutigeGespielteSpieltage = [...new Set(gespielteSpieltage)].sort(
-    (a, b) => a - b
-  );
-  naechsterSpieltagGlobal = naechsterSpieltag; // Speichere den nächsten Spieltag global
-  return {
-    gespielteSpieltage: eindeutigeGespielteSpieltage,
-    naechsterSpieltag: naechsterSpieltag,
-  };
+  const data = snapshot.val();
+  const spieltagKeys = Object.keys(data)
+    .map((key) => parseInt(key))
+    .sort((a, b) => a - b);
+
+  return spieltagKeys;
 }
 
-// Funktion, um die Dropdown-Optionen für die Spieltage zu erstellen
 async function populateSpieltagDropdown() {
-  const { gespielteSpieltage, naechsterSpieltag } = await getSpieltage();
   const selectElement = document.getElementById("spieltag-select");
-
   selectElement.innerHTML = "";
 
-  gespielteSpieltage.forEach((spieltag) => {
+  const spieltagKeys = await getSpieltageFromDB();
+
+  spieltagKeys.forEach((spieltag) => {
     const option = document.createElement("option");
     option.value = spieltag;
     option.textContent = `Spieltag ${spieltag}`;
     selectElement.appendChild(option);
   });
-  // Nächster Spieltag hinzufügen (falls vorhanden und noch nicht enthalten)
-  if (naechsterSpieltag && !gespielteSpieltage.includes(naechsterSpieltag)) {
-    const option = document.createElement("option");
-    option.value = naechsterSpieltag;
-    option.textContent = `Spieltag ${naechsterSpieltag} (nächster)`;
-    selectElement.appendChild(option);
-  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -199,22 +146,19 @@ spieltagSelect.addEventListener("change", () => {
   ergebnisListe.innerHTML =
     '<li class="text-gray-500 italic">Lade Ergebnisse...</li>';
   tippabgabeListe.innerHTML = ""; // Clear existing list
-  getSpieltagData(aktuellerSpieltag).then(() => {
+  getSpieltagDataFromDB(aktuellerSpieltag).then(() => {
     updateTippabgabeForm(aktuellerSpieltag); // Nach dem Laden der Spiele die Tipps laden und Eingabefelder aktivieren/deaktivieren
   });
 });
 
-// Fuktion um den Bundesliga Spieltag anzuzeigen
-async function getSpieltagData(spieltag) {
-  const url = `https://www.thesportsdb.com/api/v1/json/3/eventsround.php?id=${ligaId}&r=${spieltag}`;
+async function getSpieltagDataFromDB(spieltag) {
+  const db = getDatabase();
+  const spieltagRef = ref(db, `spieltage/${spieltag}`);
 
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("Netzwerkfehler: Konnte Daten nicht abrufen.");
-    }
-    const data = await response.json();
-    if (data.events === null) {
+    const snapshot = await get(spieltagRef);
+
+    if (!snapshot.exists()) {
       ergebnisListe.innerHTML =
         '<li class="text-red-500 text-center font-semibold">Keine Spiele gefunden für diesen Spieltag.</li>';
       tippabgabeListe.innerHTML =
@@ -222,43 +166,51 @@ async function getSpieltagData(spieltag) {
       return;
     }
 
+    const spiele = Object.values(snapshot.val());
+
     let ergebnisHtml = "";
     let tippabgabeHtml = "";
-    data.events.forEach((spiel) => {
+
+    spiele.forEach((spiel) => {
+      const datum = new Date(spiel.matchDateTime).toLocaleString("de-DE", {
+        weekday: "short",
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
       ergebnisHtml += `
-                          <li class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
-                              <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
-                                  <span class="font-semibold text-gray-900">${
-                                    spiel.strHomeTeam
-                                  }</span>
-                                  <span class="text-gray-600">-</span>
-                                <span class="font-semibold text-gray-900">${
-                                  spiel.strAwayTeam
-                                }</span>
-                              </div>
-                                <div class="text-gray-700 text-sm">
-                                ${
-                                  spiel.intHomeScore !== null &&
-                                  spiel.intAwayScore !== null
-                                    ? `<span class="font-semibold">${spiel.intHomeScore} : ${spiel.intAwayScore}</span><br>`
-                                    : ""
-                                }
-                                  ${spiel.dateEvent} ${spiel.strTime}
-                              </div>
-                          </li>
-                      `;
+        <li class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+            <span class="font-semibold text-gray-900">${spiel.homeTeam}</span>
+            <span class="text-gray-600">-</span>
+            <span class="font-semibold text-gray-900">${spiel.awayTeam}</span>
+          </div>
+          <div class="text-gray-700 text-sm">
+            ${
+              spiel.homeTeamScore !== null && spiel.awayTeamScore !== null
+                ? `<span class="font-semibold">${spiel.homeTeamScore} : ${spiel.awayTeamScore}</span><br>`
+                : ""
+            }
+            ${datum}
+          </div>
+        </li>
+      `;
+
       tippabgabeHtml += `
-                      <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" data-game-id="${spiel.idEvent}">
-                          <div id="homeTeam-${spiel.idEvent}" class="text-center md:text-left font-semibold text-gray-900">${spiel.strHomeTeam}</div>
-                          <div class="flex space-x-2 justify-center">
-                              <input type="number" class="homeTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore" value="">
-                              <span class="text-gray-500">:</span>
-                              <input type="number" class="awayTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore" value="">
-                          </div>
-                          <div id="awayTeam-${spiel.idEvent}" class="text-center md:text-right font-semibold text-gray-900">${spiel.strAwayTeam}</div>
-                      </li>
-                  `;
+        <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" data-game-id="${spiel.matchID}">
+          <div class="text-center md:text-left font-semibold text-gray-900">${spiel.homeTeam}</div>
+          <div class="flex space-x-2 justify-center">
+            <input type="number" class="homeTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore">
+            <span class="text-gray-500">:</span>
+            <input type="number" class="awayTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore">
+          </div>
+          <div class="text-center md:text-right font-semibold text-gray-900">${spiel.awayTeam}</div>
+        </li>
+      `;
     });
+
     ergebnisListe.innerHTML = ergebnisHtml;
     tippabgabeListe.innerHTML = tippabgabeHtml;
   } catch (error) {

@@ -166,7 +166,7 @@ async function getBundesligaTableFromDB() {
         <tr>
           <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-900">${rank}</div></td>
           <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${team.teamName}</div></td>
-          <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.goals} : ${team.opponentGoals}</div></td>
+          <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.teamGoals} : ${team.opponentGoals} / ${team.diff}</div></td>
           <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.points}</div></td>
         </tr>
       `;

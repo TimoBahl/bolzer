@@ -24,6 +24,7 @@ async function getTabelle() {
         points: team.points,
         teamGoals: team.goals,
         opponentGoals: team.opponentGoals,
+        diff: team.goalDiff,
         matches: team.matches
       };
     });

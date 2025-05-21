@@ -11,7 +11,10 @@ admin.initializeApp({
 
 // eslint-disable-next-line require-jsdoc
 async function getSpieltage() {
-  const url = `https://api.openligadb.de/getmatchdata/bl1/2024`;
+  const matchDays = 34;  
+
+  for (let spieltag = 1; spieltag <= matchDays; spieltag++) {
+    const url = `https://api.openligadb.de/getmatchdata/bl1/2024/${spieltag}`;
 
     try {
       const response = await axios.get(url);
@@ -23,6 +26,5 @@ async function getSpieltage() {
       await admin.app().delete();
     }
   }
-
-
+}
 getSpieltage();

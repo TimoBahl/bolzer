@@ -1,4 +1,4 @@
-import { get } from "axios";
+import axios from "axios";
 
 // Service Account aus GitHub Secret laden
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);

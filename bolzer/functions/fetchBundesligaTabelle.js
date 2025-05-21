@@ -22,6 +22,8 @@ async function getTabelle() {
       tabelleObj[platz] = {
         teamName: team.teamName,
         points: team.points,
+        teamGoals: team.goals,
+        opponentGoals: team.opponentGoals,
         diff: team.goalDiff,
         matches: team.matches
       };

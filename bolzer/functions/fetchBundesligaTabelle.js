@@ -17,8 +17,9 @@ async function getTabelle() {
     const response = await axios.get(url);
     const rawTabelle = response.data;
     const tabelleObj = {};
-    rawTabelle.forEach(team => {
-      tabelleObj[team.place] = team;
+    rawTabelle.forEach((team, index) => {
+      const platz = index + 1; // Platznummer 1-basiert
+      tabelleObj[platz] = team;
     });
 
     await admin.database().ref(`/tabelle`).set(tabelleObj);

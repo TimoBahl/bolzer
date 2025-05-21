@@ -18,8 +18,11 @@ async function getTabelle() {
     const rawTabelle = response.data;
     const tabelleObj = {};
     rawTabelle.forEach((team, index) => {
-      const platz = index + 1; // Platznummer 1-basiert
-      tabelleObj[platz] = team;
+      const platz = index + 1;
+      tabelleObj[platz] = {
+        teamName: team.teamName,
+        // weitere Felder, die du willst
+      };
     });
 
     await admin.database().ref(`/tabelle`).set(tabelleObj);

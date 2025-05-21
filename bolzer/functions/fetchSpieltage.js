@@ -1,40 +1,45 @@
-const axios = require("axios");
-const admin = require("firebase-admin");
+import axios from "axios";
+import admin from "firebase-admin";
 
 // Service Account aus GitHub Secret laden
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://bolzer-8d71d-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL:
+    "https://bolzer-8d71d-default-rtdb.europe-west1.firebasedatabase.app",
 });
 
 // eslint-disable-next-line require-jsdoc
 async function getSpieltage() {
   const matchDays = 34;
-  let fehler = 0;
 
   for (let spieltag = 1; spieltag <= matchDays; spieltag++) {
-    const url = `https://www.thesportsdb.com/api/v1/json/3/eventsround.php?id=4331&r=${spieltag}&s=2024-2025`;
+    const url = `https://api.openligadb.de/getmatchdata/bl1/2024/${spieltag}`;
 
     try {
       const response = await axios.get(url);
-      await admin.database().ref(`/spieltag/${spieltag}`).set(response.data);
-      console.log(`Spieltag ${spieltag} gespeichert.`);
+
+      const formattedMatches = response.data.reduce((acc, match) => {
+        const endResult = match.matchResults?.find(r => r.resultTypeID === 2);
+        acc[match.matchID] = {
+          matchID: match.matchID,
+          matchDateTime: match.matchDateTime,
+          homeTeam: match.team1?.teamName,
+          awayTeam: match.team2?.teamName,
+          homeTeamScore: endResult?.pointsTeam1 ?? null,
+          awayTeamScore: endResult?.pointsTeam2 ?? null,
+        };
+        return acc;
+      }, {});
+
+      await admin.database().ref(`/spieltage/${spieltag}`).set(formattedMatches);
+      console.log(`Spieltage gespeichert für Spieltag ${spieltag}.`);
     } catch (error) {
       console.error(`Fehler bei Spieltag ${spieltag}:`, error.message);
-      fehler++;
     }
   }
 
   await admin.app().delete();
-
-
-  if (fehler > 0) {
-    process.exit(1); // fehlerhaft
-  } else {
-    process.exit(0); // erfolgreich
-  }
 }
-
 getSpieltage();

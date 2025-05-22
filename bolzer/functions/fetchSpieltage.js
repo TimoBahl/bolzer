@@ -8,6 +8,8 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
+const db = admin.firestore();
+
 // eslint-disable-next-line require-jsdoc
 async function getSpieltage() {
   const matchDays = 34;
@@ -17,7 +19,7 @@ async function getSpieltage() {
 
     try {
       const response = await axios.get(url);
-      const batch = admin.firestore.batch();
+      const batch = db.batch();
 
       response.data.forEach((match) => {
         const endResult = match.matchResults?.find((r) => r.resultTypeID === 2);

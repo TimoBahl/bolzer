@@ -7,8 +7,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, "./index.html"),
-        home: resolve(__dirname, "./home.html"),
-        prediction: resolve(__dirname, "./prediction.html"),
+        home: resolve(__dirname, "src/html/home.html"),
+        prediction: resolve(__dirname, "src/html/prediction.html"),
+        leaderboard: resolve(__dirname, "src/html/leaderboard.html"),
       },
     },
   },
@@ -16,3 +17,4 @@ export default defineConfig({
     open: true, // Öffnet den Browser automatisch, wenn der Server startet
   },
 });
+

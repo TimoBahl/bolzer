@@ -12,7 +12,7 @@ document.getElementById("predictionBtn").addEventListener("click", () => {
 document.getElementById("logoutBtn").addEventListener("click", async () => {
   try {
     await signOut(auth);
-    window.location.href = "./../index.html";
+    window.location.href = "./../html/index.html";
   } catch (err) {
     alert("Fehler beim Logout: " + err.message);
   }

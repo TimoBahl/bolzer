@@ -14,18 +14,20 @@ const sidebar = document.getElementById("sidebar");
 const openSidebarBtn = document.getElementById("open-sidebar-btn");
 const closeSidebarBtn = document.getElementById("close-sidebar-btn");
 const mainContent = document.getElementById("main-content");
-
+const navContent = document.getElementById("nav-content");
 const ligaId = 4331
 let naechsterSpieltagGlobal = null;
 
 openSidebarBtn.addEventListener("click", () => {
   sidebar.classList.add("active");
   mainContent.classList.add("active");
+  navContent.classList.add("active");
 });
 
 closeSidebarBtn.addEventListener("click", () => {
   sidebar.classList.remove("active");
   mainContent.classList.remove("active");
+  navContent.classList.remove("active");
 });
 
 //Lade Spieltage aus der Firebase Realtime Database
@@ -65,7 +67,7 @@ async function populateSpieltagDropdown() {
   if (spieltagKeys.length > 0) {
     aktuellerSpieltag = spieltagKeys[0];
     selectElement.value = aktuellerSpieltag;
-    tippabgabeTitle.textContent = `Tippabgabe [Spieltag ${aktuellerSpieltag}]`;
+    tippabgabeTitle.textContent = `Tippabgabe Spieltag ${aktuellerSpieltag}`;
 
     await getSpieltagDataFromDB(aktuellerSpieltag); //Holt die Spieldaten für den aktuellen Spieltag
     updateTippabgabeForm(aktuellerSpieltag); //Aktualisiert das Tippformular
@@ -76,7 +78,11 @@ document.addEventListener("DOMContentLoaded", () => {
   populateSpieltagDropdown();
 });
 
+<<<<<<< HEAD:bolzer/src/predictions.js
 // Funktion, umm das Ergebnisse Feld mit den Daten aus der Firestore Database zu befüllen 
+=======
+// Funktion, um die Ergebnisse Felder mit den Daten aus der Firebase Realtime Database zu befüllen
+>>>>>>> 50c26aa4cffcff9ab163a9dcf1fd83e6c8f104be:src/js/predictions.js
 async function getSpieltagDataFromDB(spieltag) {
   const spieleColRef = collection(db, `spieltage/${spieltag}/spiele`);
 
@@ -106,13 +112,21 @@ async function getSpieltagDataFromDB(spieltag) {
       });
 
       ergebnisHtml += `
+<<<<<<< HEAD:bolzer/src/predictions.js
         <li class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
             <span class="font-semibold text-gray-900">${spiel.heim}</span>
             <span class="text-gray-600">-</span>
             <span class="font-semibold text-gray-900">${spiel.gast}</span>
+=======
+        <li class="p-4 flex justify-between items-center">
+          <div class="flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+            <span class="font-semibold text-gray-900 dark:text-white">${spiel.homeTeam}</span>
+            <span class="text-gray-600 dark:text-white">-</span>
+            <span class="font-semibold text-gray-900 dark:text-white">${spiel.awayTeam}</span>
+>>>>>>> 50c26aa4cffcff9ab163a9dcf1fd83e6c8f104be:src/js/predictions.js
           </div>
-          <div class="text-gray-700 text-sm">
+          <div class="text-gray-700 text-sm dark:text-white">
             ${
               spiel.ergebnis
                 ? `<span class="font-semibold">${spiel.ergebnis.toreHeim} : ${spiel.ergebnis.toreGast}</span><br>`
@@ -124,14 +138,23 @@ async function getSpieltagDataFromDB(spieltag) {
       `;
 
       tippabgabeHtml += `
+<<<<<<< HEAD:bolzer/src/predictions.js
         <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" data-game-id="${doc.id}">
           <div class="text-center md:text-left font-semibold text-gray-900">${spiel.heim}</div>
+=======
+        <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" data-game-id="${spiel.matchID}">
+          <div class="text-center md:text-left font-semibold text-gray-900 dark:text-white">${spiel.homeTeam}</div>
+>>>>>>> 50c26aa4cffcff9ab163a9dcf1fd83e6c8f104be:src/js/predictions.js
           <div class="flex space-x-2 justify-center">
             <input type="number" class="homeTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore">
             <span class="text-gray-500">:</span>
             <input type="number" class="awayTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore">
           </div>
+<<<<<<< HEAD:bolzer/src/predictions.js
           <div class="text-center md:text-right font-semibold text-gray-900">${spiel.gast}</div>
+=======
+          <div class="text-center md:text-right font-semibold text-gray-900 dark:text-white">${spiel.awayTeam}</div>
+>>>>>>> 50c26aa4cffcff9ab163a9dcf1fd83e6c8f104be:src/js/predictions.js
         </li>
       `;
     });
@@ -164,10 +187,10 @@ async function getBundesligaTableFromDB() {
       const team = teamsData[rank];
       tableHtml += `
         <tr>
-          <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-900">${rank}</div></td>
-          <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${team.teamName}</div></td>
-          <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.teamGoals} : ${team.opponentGoals}</div></td>
-          <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900">${team.points}</div></td>
+          <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-900 dark:text-white">${rank}</div></td>
+          <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900 dark:text-white">${team.teamName}</div></td>
+          <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900 dark:text-white">${team.teamGoals} : ${team.opponentGoals}</div></td>
+          <td class="px-6 py-4 whitespace-nowrap text-right"><div class="text-sm text-gray-900 dark:text-white">${team.points}</div></td>
         </tr>
       `;
     });
@@ -262,7 +285,7 @@ spieltagSelect.addEventListener("change", () => {
   aktuellerSpieltag = parseInt(spieltagSelect.value);
   tippabgabeTitle.textContent = `Tippabgabe [Spieltag ${aktuellerSpieltag}]`;
   ergebnisListe.innerHTML =
-    '<li class="text-gray-500 italic">Lade Ergebnisse...</li>';
+    '<li class="text-gray-500 italic dark:text-white">Lade Ergebnisse...</li>';
   tippabgabeListe.innerHTML = ""; // Clear existing list
   getSpieltagDataFromDB(aktuellerSpieltag).then(() => {
     updateTippabgabeForm(aktuellerSpieltag); // Nach dem Laden der Spiele die Tipps laden und Eingabefelder aktivieren/deaktivieren
@@ -337,4 +360,24 @@ getSpieltagDataFromDB(aktuellerSpieltag).then(() => {
   if (initialSpieltag) {
     updateTippabgabeForm(initialSpieltag);
   }
+
+  // Switch Dark Mode
+  const toggleButton = document.getElementById("darkModeToggle")
+  const htmlElement = document.documentElement;
+
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    htmlElement.classList.add("dark")
+  }else{
+    htmlElement.classList.remove("dark")
+  }
+
+  toggleButton.addEventListener("click", () => {
+    if(htmlElement.classList.contains("dark")) {
+      htmlElement.classList.remove("dark")
+      localStorage.theme = 'dark';
+    }else{
+      htmlElement.classList.add("dark")
+      localStorage.theme = 'dark';
+    }
+  })
 });

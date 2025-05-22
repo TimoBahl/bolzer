@@ -1,5 +1,5 @@
 import { auth, db } from "./firebase.js";
-import { ref, set, get } from "firebase/database";
+import { collection, getDocs } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
 const spieltagSelect = document.getElementById("spieltag-select");
@@ -76,14 +76,14 @@ document.addEventListener("DOMContentLoaded", () => {
   populateSpieltagDropdown();
 });
 
-// Funktion, umm das Ergebnisse Feld mit den Daten aus der Firebase Realtime Database zu befüllen 
+// Funktion, umm das Ergebnisse Feld mit den Daten aus der Firestore Database zu befüllen 
 async function getSpieltagDataFromDB(spieltag) {
-  const spieltagRef = ref(db, `spieltage/${spieltag}`);
+  const spieleColRef = collection(db, `spieltage/${spieltag}/spiele`);
 
   try {
-    const snapshot = await get(spieltagRef);
+    const snapshot = await getDocs(spieleColRef);
 
-    if (!snapshot.exists()) {
+    if (snapshot.empty) {
       ergebnisListe.innerHTML =
         '<li class="text-red-500 text-center font-semibold">Keine Spiele gefunden für diesen Spieltag.</li>';
       tippabgabeListe.innerHTML =
@@ -91,13 +91,13 @@ async function getSpieltagDataFromDB(spieltag) {
       return;
     }
 
-    const spiele = Object.values(snapshot.val());
-
     let ergebnisHtml = "";
     let tippabgabeHtml = "";
 
-    spiele.forEach((spiel) => {
-      const datum = new Date(spiel.matchDateTime).toLocaleString("de-DE", {
+    snapshot.forEach((doc) => {
+      const spiel = doc.data();
+
+      const datum = new Date(spiel.datum).toLocaleString("de-DE", {
         weekday: "short",
         day: "2-digit",
         month: "2-digit",
@@ -108,14 +108,14 @@ async function getSpieltagDataFromDB(spieltag) {
       ergebnisHtml += `
         <li class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
-            <span class="font-semibold text-gray-900">${spiel.homeTeam}</span>
+            <span class="font-semibold text-gray-900">${spiel.heim}</span>
             <span class="text-gray-600">-</span>
-            <span class="font-semibold text-gray-900">${spiel.awayTeam}</span>
+            <span class="font-semibold text-gray-900">${spiel.gast}</span>
           </div>
           <div class="text-gray-700 text-sm">
             ${
-              spiel.homeTeamScore !== null && spiel.awayTeamScore !== null
-                ? `<span class="font-semibold">${spiel.homeTeamScore} : ${spiel.awayTeamScore}</span><br>`
+              spiel.ergebnis
+                ? `<span class="font-semibold">${spiel.ergebnis.toreHeim} : ${spiel.ergebnis.toreGast}</span><br>`
                 : ""
             }
             ${datum}
@@ -124,14 +124,14 @@ async function getSpieltagDataFromDB(spieltag) {
       `;
 
       tippabgabeHtml += `
-        <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" data-game-id="${spiel.matchID}">
-          <div class="text-center md:text-left font-semibold text-gray-900">${spiel.homeTeam}</div>
+        <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" data-game-id="${doc.id}">
+          <div class="text-center md:text-left font-semibold text-gray-900">${spiel.heim}</div>
           <div class="flex space-x-2 justify-center">
             <input type="number" class="homeTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore">
             <span class="text-gray-500">:</span>
             <input type="number" class="awayTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore">
           </div>
-          <div class="text-center md:text-right font-semibold text-gray-900">${spiel.awayTeam}</div>
+          <div class="text-center md:text-right font-semibold text-gray-900">${spiel.gast}</div>
         </li>
       `;
     });

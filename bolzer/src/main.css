@@ -4,28 +4,50 @@
 @tailwind utilities;
 
 
-/*
-Sidebar konfigs
- */
+/* Zusätzliche Stile für die Navigationsleiste */
 #sidebar {
     transition: transform 0.3s ease-in-out;
     transform: translateX(-100%);
 }
+
 #sidebar.active {
     transform: translateX(0);
 }
-#main-content {
+
+#main-content, #nav-content {
     transition: margin-left 0.3s ease-in-out;
     margin-left: 0;
 }
+
 #main-content.active {
-    margin-left: 256px; /* Breite der Sidebar */
+    margin-left: 120px; /* Breite der Sidebar */
 }
+#nav-content.active{
+    margin-left: 160px; /* Breite der Sidebar */
+
+}
+
 #open-sidebar-btn {
-    position: fixed;
+    position: fixed; /* Fixiert die Position des Buttons */
     top: 0;
     left: 0;
-    margin-left: 1rem;
+    margin-left: 1rem; /* Anpassen des Abstands nach Bedarf */
     margin-top: 1rem;
-    z-index: 40;
+    z-index: 40; /* Sollte über anderen Elementen liegen */
+}
+
+#bolzer-logo {
+    position: absolute;
+    height: 100px;
+    width: auto;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+#nav-content > div {
+    height: 64px;
+    overflow: visible;
+    padding-left: 100px;
 }

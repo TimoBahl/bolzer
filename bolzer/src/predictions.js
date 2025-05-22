@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
   populateSpieltagDropdown();
 });
 
-// Funktion, umm das Ergebnisse Feld mit den Daten aus der Firebase Realtime Database zu befüllen 
+// Funktion, um die Ergebnisse Felder mit den Daten aus der Firebase Realtime Database zu befüllen
 async function getSpieltagDataFromDB(spieltag) {
   const spieltagRef = ref(db, `spieltage/${spieltag}`);
 
@@ -107,7 +107,7 @@ async function getSpieltagDataFromDB(spieltag) {
 
       ergebnisHtml += `
         <li class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+          <div class="flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
             <span class="font-semibold text-gray-900">${spiel.homeTeam}</span>
             <span class="text-gray-600">-</span>
             <span class="font-semibold text-gray-900">${spiel.awayTeam}</span>

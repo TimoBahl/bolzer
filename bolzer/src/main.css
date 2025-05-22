@@ -1,0 +1,31 @@
+/* src/main.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/*
+Sidebar konfigs
+ */
+#sidebar {
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+}
+#sidebar.active {
+    transform: translateX(0);
+}
+#main-content {
+    transition: margin-left 0.3s ease-in-out;
+    margin-left: 0;
+}
+#main-content.active {
+    margin-left: 256px; /* Breite der Sidebar */
+}
+#open-sidebar-btn {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    z-index: 40;
+}

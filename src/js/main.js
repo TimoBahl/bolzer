@@ -19,7 +19,7 @@ var uiConfig = {
     EmailAuthProvider.PROVIDER_ID,
     GoogleAuthProvider.PROVIDER_ID,
   ],
-  signInSuccessUrl: "/home.html",
+  signInSuccessUrl: "src/html/home.html",
 };
 
 // FirebaseUI-Widget initialisieren

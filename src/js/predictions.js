@@ -128,11 +128,11 @@ async function getSpieltagDataFromDB(spieltag) {
       tippabgabeHtml += `
         <li class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center" data-game-id="${spiel.matchID}">
           <div class="text-center md:text-left font-semibold text-gray-900 dark:text-white">${spiel.homeTeam}</div>
-          <div class="flex space-x-2 justify-center">
-            <input type="number" class="homeTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore">
-            <span class="text-gray-500">:</span>
-            <input type="number" class="awayTeamResult w-16 border border-gray-300 rounded-md py-2 text-center" placeholder="Tore">
-          </div>
+          <div class="flex justify-center space-x-1">
+  <input type="text" min="0" class="w-10 h-10 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+  <span class="text-white text-lg p-2">:</span>
+  <input type="text" min="0" class="w-10 h-10 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+</div>
           <div class="text-center md:text-right font-semibold text-gray-900 dark:text-white">${spiel.awayTeam}</div>
         </li>
       `;

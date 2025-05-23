@@ -6,9 +6,9 @@ const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL:
-    "https://bolzer-8d71d-default-rtdb.europe-west1.firebasedatabase.app",
 });
+
+const db = admin.firestore();
 
 async function getTabelle() {
   const url = `https://api.openligadb.de/getbltable/bl1/2024`;
@@ -16,24 +16,30 @@ async function getTabelle() {
   try {
     const response = await axios.get(url);
     const rawTabelle = response.data;
-    const tabelleObj = {};
+    
+    const batch = db.batch();
+
     rawTabelle.forEach((team, index) => {
       const platz = index + 1;
-      tabelleObj[platz] = {
+      const teamDocRef = db.collection("bundesligaTabelle").doc(platz.toString());
+
+      batch.set(teamDocRef, {
         teamName: team.teamName,
         points: team.points,
         teamGoals: team.goals,
         opponentGoals: team.opponentGoals,
         diff: team.goalDiff,
         matches: team.matches
-      };
+      });
     });
 
-    await admin.database().ref(`/tabelle`).set(tabelleObj);
-    console.log(`Bundesliga Tabelle gespeichert.`);
+    await batch.commit();
+    console.log("Bundesliga Tabelle erfolgreich in Firestore gespeichert.");
   } catch (error) {
-    console.error(`Fehler beim speicher der Bundesliga Tabelle:`, error.message);
+    console.error("Fehler beim Speichern der Bundesliga Tabelle:", error.message);
+  } finally {
+    await admin.app().delete();
+  }
 }
-  await admin.app().delete();
-}
+
 getTabelle();

@@ -4,13 +4,14 @@ import admin from "firebase-admin";
 // Service Account aus GitHub Secret laden
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
+// Firebase Admin initialisieren
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL:
-    "https://bolzer-8d71d-default-rtdb.europe-west1.firebasedatabase.app",
 });
 
-// eslint-disable-next-line require-jsdoc
+const db = admin.firestore();
+
+// Hauptfunktion zum Abrufen und Speichern der Spieltage
 async function getSpieltage() {
   const matchDays = 34;
 
@@ -19,27 +20,44 @@ async function getSpieltage() {
 
     try {
       const response = await axios.get(url);
+      const batch = db.batch();
 
-      const formattedMatches = response.data.reduce((acc, match) => {
-        const endResult = match.matchResults?.find(r => r.resultTypeID === 2);
-        acc[match.matchID] = {
-          matchID: match.matchID,
-          matchDateTime: match.matchDateTime,
-          homeTeam: match.team1?.teamName,
-          awayTeam: match.team2?.teamName,
-          homeTeamScore: endResult?.pointsTeam1 ?? null,
-          awayTeamScore: endResult?.pointsTeam2 ?? null,
+      // Spieltag-Dokument (z. B. für spätere Start-/Enddatum-Daten vorbereiten)
+      const spieltagRef = db.collection("spieltage").doc(spieltag.toString());
+      batch.set(spieltagRef, {
+        spieltagNummer: spieltag
+      }, { merge: true });
+
+      // Alle Spiele zu diesem Spieltag einfügen
+      response.data.forEach((match) => {
+        const endResult = match.matchResults?.find((r) => r.resultTypeID === 2);
+
+        const matchData = {
+          heim: match.team1?.teamName ?? null,
+          gast: match.team2?.teamName ?? null,
+          datum: match.matchDateTime,
+          ergebnis: endResult
+            ? {
+                toreHeim: endResult.pointsTeam1,
+                toreGast: endResult.pointsTeam2,
+              }
+            : null,
         };
-        return acc;
-      }, {});
 
-      await admin.database().ref(`/spieltage/${spieltag}`).set(formattedMatches);
-      console.log(`Spieltage gespeichert für Spieltag ${spieltag}.`);
+        const matchRef = spieltagRef.collection("spiele").doc(match.matchID.toString());
+        batch.set(matchRef, matchData);
+      });
+
+      await batch.commit();
+      console.log(`✅ Spieltag ${spieltag} erfolgreich gespeichert.`);
     } catch (error) {
-      console.error(`Fehler bei Spieltag ${spieltag}:`, error.message);
+      console.error(`❌ Fehler bei Spieltag ${spieltag}:`, error.message);
     }
   }
 
+  // Admin SDK sauber beenden
   await admin.app().delete();
 }
+
+// Funktion starten
 getSpieltage();

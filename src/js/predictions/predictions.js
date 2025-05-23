@@ -2,6 +2,8 @@ import { populateSpieltagDropdown } from "./dropdown";
 import { loadDataForGameday } from "./gameday";
 import { savePredictionsToDB } from "./savePredictions";
 import { loadResultsFromDB } from "./results";
+import { loadBundesligaScoreboardFromDB } from "./bundesligaScoreboard";
+import { auth } from "../firebase";
 
 //Sidebar
 const sidebar = document.getElementById("sidebar");
@@ -22,15 +24,53 @@ closeSidebarBtn.addEventListener("click", () => {
   navContent.classList.remove("active");
 });
 
+// Dark Mode
+const toggleButton = document.getElementById("darkModeToggle");
+const htmlElement = document.documentElement;
+
+if (
+  localStorage.theme === "dark" ||
+  (!("theme" in localStorage) &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches)
+) {
+  htmlElement.classList.add("dark");
+} else {
+  htmlElement.classList.remove("dark");
+}
+
+toggleButton.addEventListener("click", () => {
+  if (htmlElement.classList.contains("dark")) {
+    htmlElement.classList.remove("dark");
+    localStorage.theme = "dark";
+  } else {
+    htmlElement.classList.add("dark");
+    localStorage.theme = "dark";
+  }
+});
+
+// Main functions
+let currentUser = null;
+
+auth.onAuthStateChanged(async (user) => {
+  currentUser = user;
+
+  const spieltagSelect = document.getElementById("spieltag-select");
+  if (spieltagSelect.value) {
+    await loadDataForGameday(spieltagSelect.value, currentUser);
+    loadResultsFromDB(spieltagSelect.value)
+  }
+})
+
 document.addEventListener("DOMContentLoaded", async () => {
   await populateSpieltagDropdown();
+  loadBundesligaScoreboardFromDB();
 
   document
     .getElementById("spieltag-select")
     .addEventListener("change", async (e) => {
       const gameday = e.target.value;
       if (gameday) {
-        await loadDataForGameday(gameday);
+        await loadDataForGameday(gameday, currentUser);
         loadResultsFromDB(gameday);
       }
     });

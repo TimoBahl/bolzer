@@ -17,7 +17,7 @@ async function getTabelle() {
     const response = await axios.get(url);
     const rawTabelle = response.data;
     
-    const batch = db.batch
+    const batch = db.batch();
 
     rawTabelle.forEach((team, index) => {
       const platz = index + 1;

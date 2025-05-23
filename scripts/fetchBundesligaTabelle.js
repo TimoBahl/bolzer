@@ -29,7 +29,8 @@ async function getTabelle() {
         teamGoals: team.goals,
         opponentGoals: team.opponentGoals,
         diff: team.goalDiff,
-        matches: team.matches
+        matches: team.matches,
+        teamIconUrl: team.teamIconUrl
       });
     });
 

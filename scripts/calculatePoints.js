@@ -53,6 +53,11 @@ async function loadUserTipsForLastMatchday(spielIds) {
   const usersSnapshot = await db.collection("users").get();
   console.log(`Gefundene User: ${usersSnapshot.size}`);
 
+  usersSnapshot.forEach((doc) => {
+  console.log("🔍 User-ID:", doc.id);
+  console.log("📄 Daten:", doc.data());
+});
+
   const allUserTips = {};
 
   for (const userDoc of usersSnapshot.docs) {

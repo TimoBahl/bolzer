@@ -46,4 +46,5 @@ async function getLastMatchdayWithMatches() {
   };
 }
 
-getLastMatchdayWithMatches();
+const result = await getLastMatchdayWithMatches();
+console.log("Ergebnis:", JSON.stringify(result, null, 2));

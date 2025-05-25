@@ -1,9 +1,9 @@
+import { auth } from "../firebase";
 import { populateSpieltagDropdown } from "./dropdown";
 import { loadDataForGameday } from "./gameday";
 import { savePredictionsToDB } from "./savePredictions";
 import { loadResultsFromDB } from "./results";
 import { loadBundesligaScoreboardFromDB } from "./bundesligaScoreboard";
-import { auth } from "../firebase";
 
 //Sidebar
 const sidebar = document.getElementById("sidebar");

@@ -48,6 +48,7 @@ async function getLastMatchdayWithMatches() {
 
 async function loadUserTipsForLastMatchday(spielIds) {
   const usersSnapshot = await db.collection("users").get();
+  console.log(`Gefundene User: ${usersSnapshot.size}`);
 
   const allUserTips = {};
 
@@ -62,12 +63,15 @@ async function loadUserTipsForLastMatchday(spielIds) {
       spielIds
     ).get();
 
-    const userTipps = {};
-    tippsSnapshot.docs.forEach(doc => {
-      userTipps[doc.id] = doc.data();
-    });
-
-    allUserTips[userId] = userTipps;
+    if (!tippsSnapshot.empty) {
+      const userTipps = {};
+      tippsSnapshot.docs.forEach((doc) => {
+        userTipps[doc.id] = doc.data();
+      });
+      allUserTips[userId] = userTipps;
+    } else {
+      console.log(`Keine Tipps für User ${userId}`);
+    }
   }
 
   return allUserTips;

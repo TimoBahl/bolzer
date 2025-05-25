@@ -80,7 +80,7 @@ async function loadUserTipsForLastMatchday(spielIds) {
     return;
   }
 
-  const spielIds = lastMatchday.spiele.map(s => s.id);
+  const spielIds = lastMatchday.spiele.map(s => s.id.toString());
 
   console.log(`Lade Tipps für Spieltag ${lastMatchday.spieltagId} mit ${spielIds.length} Spielen`);
 

@@ -27,6 +27,7 @@ async function getSpieltage() {
 
       const alleSpielzeiten = response.data.map(match => new Date(match.matchDateTime));
       const letzterZeitpunkt = new Date(Math.max(...alleSpielzeiten.map(d => d.getTime())));
+      const ersterZeitpunkt = new Date(Math.min(...alleSpielzeiten.map(d => d.getTime())));
 
       batch.set(spieltagRef, {
         spieltagNummer: spieltag,

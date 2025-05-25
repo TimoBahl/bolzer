@@ -7,6 +7,9 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+const collections = await db.listCollections();
+console.log("📁 Root-Collections:");
+collections.forEach((col) => console.log("—", col.id));
 
 async function getLastMatchdayWithMatches() {
   const now = admin.firestore.Timestamp.now();

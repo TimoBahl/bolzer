@@ -38,7 +38,7 @@ export async function loadResultsFromDB(spieltag) {
         "justify-between",
         "bg-gray-100",
         "dark:bg-gray-700",
-        "p-3",
+        "p-2",
         "rounded"
       );
 

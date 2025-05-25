@@ -7,9 +7,6 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
-const collections = await db.listCollections();
-console.log("📁 Root-Collections:");
-collections.forEach((col) => console.log("—", col.id));
 
 async function getLastMatchdayWithMatches() {
   const now = admin.firestore.Timestamp.now();
@@ -51,38 +48,26 @@ async function getLastMatchdayWithMatches() {
 
 async function loadUserTipsForLastMatchday(spielIds) {
   const usersSnapshot = await db.collection("users").get();
-  console.log(`Gefundene User: ${usersSnapshot.size}`);
-
-  usersSnapshot.forEach((doc) => {
-    console.log("🔍 User-ID:", doc.id);
-    console.log("📄 Daten:", doc.data());
-  });
 
   const allUserTips = {};
-
-  const tippsSnapshot = await db.collectionGroup("tipps").limit(5).get();
-  tippsSnapshot.forEach((doc) => {
-    console.log("🎯 Tipp gefunden in:", doc.ref.path);
-  });
 
   for (const userDoc of usersSnapshot.docs) {
     const userId = userDoc.id;
     const tippsRef = db.collection("users").doc(userId).collection("tipps");
 
     // Alle Tipps des Users für die 8 Spiel-IDs laden
-    const tippsSnapshot = await tippsRef
-      .where(admin.firestore.FieldPath.documentId(), "in", spielIds)
-      .get();
+    const tippsSnapshot = await tippsRef.where(
+      admin.firestore.FieldPath.documentId(),
+      "in",
+      spielIds
+    ).get();
 
-    if (!tippsSnapshot.empty) {
-      const userTipps = {};
-      tippsSnapshot.docs.forEach((doc) => {
-        userTipps[doc.id] = doc.data();
-      });
-      allUserTips[userId] = userTipps;
-    } else {
-      console.log(`Keine Tipps für User ${userId}`);
-    }
+    const userTipps = {};
+    tippsSnapshot.docs.forEach(doc => {
+      userTipps[doc.id] = doc.data();
+    });
+
+    allUserTips[userId] = userTipps;
   }
 
   return allUserTips;
@@ -95,11 +80,9 @@ async function loadUserTipsForLastMatchday(spielIds) {
     return;
   }
 
-  const spielIds = lastMatchday.spiele.map((s) => s.id.toString());
+  const spielIds = lastMatchday.spiele.map(s => s.id.toString());
 
-  console.log(
-    `Lade Tipps für Spieltag ${lastMatchday.spieltagId} mit ${spielIds.length} Spielen`
-  );
+  console.log(`Lade Tipps für Spieltag ${lastMatchday.spieltagId} mit ${spielIds.length} Spielen`);
 
   const userTips = await loadUserTipsForLastMatchday(spielIds);
 

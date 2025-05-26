@@ -1,6 +1,6 @@
 export function calculation(ergebnis, tipp) {
-  const { heim: eh, aus: ea } = ergebnis;
-  const { heim: th, aus: ta } = tipp;
+  const { home: eh, away: ea } = ergebnis;
+  const { home: th, away: ta } = tipp;
 
   if (eh === th && ea === ta) return 4;
 

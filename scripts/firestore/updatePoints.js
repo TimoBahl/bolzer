@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-import { calculatePoints } from "../logic/calculationSystem.js";
+import { calculation } from "../logic/calculationSystem.js";
 
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
@@ -22,7 +22,7 @@ export async function evaluateAndSaveTips(spiele, allUserTipps) {
 
       if (ergebnis.heim == null || ergebnis.aus == null) continue;
 
-      const points = calculatePoints(ergebnis, tipp);
+      const points = calculation(ergebnis, tipp);
 
       await db
         .collection("users")

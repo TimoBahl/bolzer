@@ -32,6 +32,13 @@ export async function getLastMatchday() {
     ...doc.data(),
   }));
 
+  console.log("🧾 Geladene Spiele:", spiele);
+  spiele.forEach((spiel) =>
+    console.log(
+      `→ Spiel ${spiel.id}: ${spiel.heim} vs ${spiel.gast}, Ergebnis: ${spiel.toreHeim}:${spiel.toreGast}`
+    )
+  );
+
   return {
     spieltagId,
     spiele,

@@ -19,19 +19,19 @@ export async function savePredictionsToDB() {
       const homeScoreInput = item.querySelector(".homeTeamResult");
       const awayScoreInput = item.querySelector(".awayTeamResult");
 
-      const toreHeim = parseInt(homeScoreInput.value);
-      const toreGast = parseInt(awayScoreInput.value);
+      const predictionHome = parseInt(homeScoreInput.value);
+      const predictionAway = parseInt(awayScoreInput.value);
 
       // Überspringe leere Felder
-      if (isNaN(toreHeim) || isNaN(toreGast)) continue;
+      if (isNaN(predictionHome) || isNaN(predictionAway)) continue;
 
       const homeTeam = document.getElementById(`homeTeam-${gameId}`)?.textContent.trim() || "";
       const awayTeam = document.getElementById(`awayTeam-${gameId}`)?.textContent.trim() || "";
 
 
       const tippData = {
-        toreHeim,
-        toreGast,
+        predictionHome,
+        predictionAway,
         homeTeam,
         awayTeam,
         gameday,

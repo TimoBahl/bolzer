@@ -1,13 +1,5 @@
-import admin from "firebase-admin";
+import { db } from "./firebaseAdmin.js";
 import { calculation } from "../logic/calculationSystem.js";
-
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
-const db = admin.firestore();
 
 export async function evaluateAndSaveTips(spiele, allUserTipps) {
   for (const [userId, tipps] of Object.entries(allUserTipps)) {

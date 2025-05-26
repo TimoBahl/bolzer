@@ -8,8 +8,8 @@ export async function evaluateAndSaveTips(spiele, allUserTipps) {
       if (!tipp) continue;
 
       const ergebnis = {
-        home: spiel.toreHeim,
-        away: spiel.toreGast,
+        home: spiel.ergebnis?.toreHeim,
+        away: spiel.ergebnis?.toreGast,
       };
 
       if (ergebnis.home == null || ergebnis.away == null) continue;

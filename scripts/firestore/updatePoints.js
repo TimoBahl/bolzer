@@ -21,7 +21,16 @@ export async function evaluateAndSaveTips(spiele, allUserTipps) {
         .doc(userId)
         .collection("tipps")
         .doc(spiel.id)
-        .set({ points }, {merge: true });
+        .set(
+          {
+            points,
+            ergebnis: {
+              toreHeim: ergebnis.home,
+              toreGast: ergebnis.away,
+            },
+          },
+          { merge: true }
+        );
     }
   }
 }

@@ -1,4 +1,4 @@
-import { db, admin } from "./firebaseAdmin";
+import { db, admin } from "./firebaseAdmin.js";
 
 export async function getLastMatchday() {
   const now = admin.firestore.Timestamp.now();

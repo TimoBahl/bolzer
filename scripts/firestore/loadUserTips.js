@@ -1,4 +1,4 @@
-import { db, admin } from "./firebaseAdmin";
+import { db, admin } from "./firebaseAdmin.js";
 
 export async function loadUserTips(spielIds) {
   const usersSnapshot = await db.collection("users").get();

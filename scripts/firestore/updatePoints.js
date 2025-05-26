@@ -21,7 +21,7 @@ export async function evaluateAndSaveTips(spiele, allUserTipps) {
         .doc(userId)
         .collection("tipps")
         .doc(spiel.id)
-        .update({ points });
+        .set({ points }, {merge: true });
     }
   }
 }

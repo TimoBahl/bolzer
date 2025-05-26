@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-import { calculatePoints } from "../logic/calculationSystem";
+import { calculatePoints } from "../logic/calculationSystem.js";
 
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 

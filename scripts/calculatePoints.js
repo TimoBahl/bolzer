@@ -1,6 +1,6 @@
-import { getLastMatchday } from "./firestore/getLastMatchday";
-import { loadUserTips } from "./firestore/loadUserTips";
-import { evaluateAndSaveTips } from "./firestore/updatePoints";
+import { getLastMatchday } from "./firestore/getLastMatchday.js";
+import { loadUserTips } from "./firestore/loadUserTips.js";
+import { evaluateAndSaveTips } from "./firestore/updatePoints.js";
 
 (async () => {
   const lastMatchday = await getLastMatchday();

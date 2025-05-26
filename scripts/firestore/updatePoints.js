@@ -12,7 +12,7 @@ export async function evaluateAndSaveTips(spiele, allUserTipps) {
         away: spiel.toreGast,
       };
 
-      if (ergebnis.heim == null || ergebnis.aus == null) continue;
+      if (ergebnis.home == null || ergebnis.away == null) continue;
 
       const points = calculation(ergebnis, tipp);
 

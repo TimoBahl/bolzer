@@ -24,8 +24,15 @@ async function getSpieltage() {
 
       // Spieltag-Dokument (z. B. für spätere Start-/Enddatum-Daten vorbereiten)
       const spieltagRef = db.collection("spieltage").doc(spieltag.toString());
+
+      const alleSpielzeiten = response.data.map(match => new Date(match.matchDateTime));
+      const letzterZeitpunkt = new Date(Math.max(...alleSpielzeiten.map(d => d.getTime())));
+      const ersterZeitpunkt = new Date(Math.min(...alleSpielzeiten.map(d => d.getTime())));
+
       batch.set(spieltagRef, {
-        spieltagNummer: spieltag
+        spieltagNummer: spieltag,
+        ersterZeitpunkt: admin.firestore.Timestamp.fromDate(ersterZeitpunkt),
+        letzterZeitpunkt: admin.firestore.Timestamp.fromDate(letzterZeitpunkt)
       }, { merge: true });
 
       // Alle Spiele zu diesem Spieltag einfügen

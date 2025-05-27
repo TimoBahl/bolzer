@@ -1,167 +1,174 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deine Tipp-App - Leaderboard</title>
-  <link rel="stylesheet" href="../css/main.css">
-  <link
-          href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-          rel="stylesheet"
-  />
-  <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-          rel="stylesheet"
-  />
-  <style>
-    /* Zusätzliche Stile für die Navigationsleiste */
-    #sidebar {
-      transition: transform 0.3s ease-in-out;
-      transform: translateX(-100%);
-    }
-    #sidebar.active {
-      transform: translateX(0);
-    }
-    #main-content {
-      transition: margin-left 0.3s ease-in-out;
-      margin-left: 0;
-    }
-    #main-content.active {
-      margin-left: 256px; /* Breite der Sidebar */
-    }
-    #open-sidebar-btn {
-      position: fixed; /* Fixiert die Position des Buttons */
-      top: 0;
-      left: 0;
-      margin-left: 1rem; /* Anpassen des Abstands nach Bedarf */
-      margin-top: 1rem;
-      z-index: 40; /* Sollte über anderen Elementen liegen */
-    }
-  </style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Football Tip App UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
-<body class="bg-gray-100 font-sans">
-<div class="container mx-auto py-8">
-  <header class="text-center mb-8">
-    <h1 class="text-3xl font-bold text-gray-800">Leaderboard</h1>
-    <p class="text-gray-600">Die aktuelle Rangliste aller Tipper.</p>
-  </header>
+<body class="bg-gray-900 text-white font-sans dark:bg-gray-900">
 
-  <div class="flex">
-    <aside
-            id="sidebar"
-            class="bg-gray-800 text-white w-64 fixed top-0 left-0 h-full shadow-lg z-50"
+<div class="flex flex-col md:flex-row min-h-screen">
+
+    <aside id="sidebar"
+           class="fixed inset-y-0 left-0 z-50 w-64 bg-gray-800 flex flex-col items-start py-6 space-y-8 transition-transform duration-300 ease-in-out transform -translate-x-full
+              md:relative md:translate-x-0 md:w-14 md:hover:w-52 md:transition-[width] md:duration-300 md:ease-in-out md:overflow-hidden md:group "
     >
-      <div class="p-6">
-        <h2 class="text-2xl font-semibold mb-4">Deine Tipp-App</h2>
-        <ul class="space-y-2">
-          <li>
-            <a
-                    href="home.html"
-                    class="block px-4 py-2 hover:bg-gray-700 rounded-md"
-            >Home</a
-            >
-          </li>
-          <li>
-            <a
-                    href="prediction.html"
-                    id="tabelle-link"
-                    class="block px-4 py-2 hover:bg-gray-700 rounded-md"
-            >Tipp Abgabe</a
-            >
-          </li>
-        </ul>
-      </div>
-      <button
-              id="close-sidebar-btn"
-              class="absolute top-4 right-4 text-gray-400 hover:text-white"
-      >
-        <i class="fas fa-times"></i>
-      </button>
+        <div class="text-red-600 text-2xl font-bold mb-6 w-full px-4">⚽</div>
+
+        <nav class="flex flex-col space-y-6 w-full">
+            <button class="flex items-center space-x-4 px-4 hover:text-red-500 w-full">
+                <span class="text-xl shrink-0">🏆</span>
+                <span class="whitespace-nowrap md:max-w-0 md:group-hover:max-w-xs md:transition-[max-width] md:duration-300 md:ease-in-out">Tipprunden</span>
+            </button>
+            <button class="flex items-center space-x-4 px-4 hover:text-red-500 w-full">
+                <span class="text-xl shrink-0">⚽</span>
+                <span class="whitespace-nowrap md:max-w-0 md:group-hover:max-w-xs md:transition-[max-width] md:duration-300 md:ease-in-out">Live Ansicht</span>
+            </button>
+            <button class="flex items-center space-x-4 px-4 hover:text-red-500 w-full">
+                <span class="text-xl shrink-0">🎮</span>
+                <span class="whitespace-nowrap md:max-w-0 md:group-hover:max-w-xs md:transition-[max-width] md:duration-300 md:ease-in-out">Tipprunde erstellen</span>
+            </button>
+        </nav>
     </aside>
 
-    <main id="main-content" class="flex-1 relative">
-      <button
-              id="open-sidebar-btn"
-              class="absolute top-0 left-0 ml-4 mt-4 text-gray-700 z-40"
-      >
-        <i class="fas fa-bars text-2xl"></i>
-      </button>
+    <div id="main-content" class="flex-1 flex flex-col md:ml-0 transition-all duration-300 ease-in-out">
 
-      <div class="bg-white rounded-lg shadow-md overflow-x-auto p-6">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-          <tr>
-            <th
-                    scope="col"
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Platz
-            </th>
-            <th
-                    scope="col"
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Spieler
-            </th>
-            <th
-                    scope="col"
-                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Punkte
-            </th>
-          </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-          <tr>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">1</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">
-                Max Mustermann
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right">
-              <div class="text-sm text-gray-900">125</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">2</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">
-                Anna Schmidt
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right">
-              <div class="text-sm text-gray-900">118</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">3</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">
-                Peter Müller
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right">
-              <div class="text-sm text-gray-900">112</div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </div>
+        <header class="bg-gray-850 flex justify-between items-center px-6 py-4 border-b border-gray-700">
+            <button id="menu-button" class="md:hidden text-white text-2xl mr-4">☰</button>
+            <img src="http://googleusercontent.com/image_collection/image_retrieval/888118098734008396" alt="Logo" class="h-8 mr-4">
 
-  <footer class="text-center mt-8 text-gray-500 text-sm">
-    &copy; 2025 Bolzer
-  </footer>
+            <nav class="flex space-x-6 text-sm">
+                <a href="#" class="hover:text-red-500">Live</a>
+                <a href="#" class="hover:text-red-500">Sport</a>
+            </nav>
+
+            <div class="flex items-center space-x-4 relative">
+                <div class="text-sm text-gray-400 text-right hidden sm:block">
+                    <div class="font-semibold text-white">[Username]</div>
+                </div>
+                <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
+                        class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                        type="button">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-10 h-10 rounded-full border-2 border-red-500" src="https://i.pravatar.cc/40"
+                         alt="User">
+                </button>
+
+                <div id="dropdownAvatar"
+                     class="z-50 hidden absolute top-14 right-0 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+                    <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                        <div>[Username]</div>
+                        <div class="font-medium truncate">maxMusterman@mail.com</div>
+                    </div>
+                    <ul class="py-2 text-sm text-700 dark:text-gray-200"
+                        aria-labelledby="dropdownUserAvatarButton">
+                        <li>
+                            <a href="#"
+                               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                        </li>
+
+                    </ul>
+                    <div class="py-2">
+                        <button id="logoutBtn"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8 max-w-8xl">
+            <header class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-white">
+                    Tabelle
+                </h1>
+                <p class="text-gray-600 dark:text-gray-300">
+                    Aktueller Tabellenstand der Teilnehmer
+                </p>
+            </header>
+            <div class="flex flex-col lg:flex-row"> <section class="p-4 bg-gray-850 rounded-lg shadow-md mb-8 lg:mr-8 lg:mb-0 w-full lg:w-auto"> <h3 class="text-white text-lg font-semibold">TippSpiel</h3>
+                <hr class="border-gray-700 mt-2 mb-4">
+                <div>
+                    <h4 class="text-gray-400 text-sm mb-2">MEINE LIGA</h4>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="home.html"
+                               class="flex items-center p-2 rounded-md hover:bg-gray-700 transition-colors duration-200">
+                                <i class="fa-solid fa-house text-white w-5 h-auto mr-2"></i> <span
+                                    class="text-white text-sm">Startseite</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="prediction.html"
+                               class="flex items-center p-2 rounded-md hover:bg-gray-700 transition-colors duration-200">
+                                <i class="fa-solid fa-futbol text-white w-5 h-auto mr-2"></i> <span
+                                    class="text-white text-sm">Tippabgabe</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"
+                               class="flex items-center p-2 rounded-md hover:bg-gray-700 transition-colors duration-200">
+                                <i class="fa-solid fa-calendar-alt text-white w-5 h-auto mr-2"></i> <span
+                                    class="text-white text-sm">Spieltage</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+                <main class="flex-1 flex flex-col gap-8 relative lg:px-8">
+                    <section class="flex-1"> <div class="w-full bg-white rounded-lg shadow-md p-6 px-8 dark:bg-gray-800 overflow-y-auto">
+                        <h2 class="text-xl font-semibold text-gray-700 mb-4 dark:text-gray-200">
+                            [Name des TippSpiels] Tabelle
+                        </h2>
+                        <div class="overflow-x-auto"> <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"> <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th
+                                    scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300"
+                            >
+                                Platz
+                            </th>
+                            <th
+                                    scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300"
+                            >
+                                Name
+                            </th>
+                            <th
+                                    scope="col"
+                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300"
+                            >
+                                SpieltagsPunkte
+                            </th>
+                            <th
+                                    scope="col"
+                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300"
+                            >
+                                GesamtPunkte
+                            </th>
+                        </tr>
+                        </thead>
+                            <tbody
+                                    id="tabelle-body"
+                                    class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700"
+                            ></tbody>
+                        </table>
+                        </div>
+                    </div>
+                    </section>
+                </main>
+            </div>
+            <footer class="text-center mt-8 text-gray-500 text-sm dark:text-gray-400">
+                &copy; 2025 Bolzer
+            </footer>
+        </div>
+    </div>
 </div>
-<script type="module" src="../js/leaderboard.js"></script>
-
+    <script type="module" src="../js/home.js"></script>
 </body>
 </html>

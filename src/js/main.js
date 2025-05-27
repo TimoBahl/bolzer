@@ -1,27 +1,54 @@
-import { auth } from "./firebase"; // Importiere Firebase Auth
-import * as firebaseui from "firebaseui";
-import "firebaseui/dist/firebaseui.css";
-import { EmailAuthProvider, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "./firebase";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-// FirebaseUI-Konfiguration
-var uiConfig = {
-  callbacks: {
-    signInSuccessWithAuthResult: function (authResult) {
-      console.log("User signed in:", authResult.user);
-      return true;
-    },
-    uiShown: function () {
-      document.getElementById("loader").style.display = "none";
-    },
-  },
-  signInFlow: "popup",
-  signInOptions: [
-    EmailAuthProvider.PROVIDER_ID,
-    GoogleAuthProvider.PROVIDER_ID,
-  ],
-  signInSuccessUrl: "src/html/home.html",
-};
+// Buttons & Inputs holen
+const loginBtn = document.getElementById("loginBtn");
+const registerBtn = document.getElementById("registerBtn");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const errorDisplay = document.getElementById("error");
+const googleBtn = document.getElementById("googleLoginBtn");
 
-// FirebaseUI-Widget initialisieren
-const ui = new firebaseui.auth.AuthUI(auth);
-ui.start("#firebaseui-auth-container", uiConfig);
+// Login
+loginBtn.addEventListener("click", async () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log("Angemeldet als:", userCredential.user);
+    window.location.href = "src/html/home.html";
+  } catch (error) {
+    errorDisplay.textContent = "Login fehlgeschlagen: " + error.message;
+  }
+});
+
+// Registrierung
+registerBtn.addEventListener("click", async () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    console.log("Registriert als:", userCredential.user);
+    window.location.href = "src/html/home.html";
+  } catch (error) {
+    errorDisplay.textContent = "Registrierung fehlgeschlagen: " + error.message;
+  }
+});
+
+// Google
+googleBtn.addEventListener("click", async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    console.log("Google Login:", result.user);
+    window.location.href = "src/html/home.html";
+  } catch (error) {
+    errorDisplay.textContent = "Google Login fehlgeschlagen: " + error.message;
+  }
+});

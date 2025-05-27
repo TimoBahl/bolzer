@@ -13,73 +13,11 @@
 
 <div class="flex flex-col md:flex-row min-h-screen">
 
-    <aside id="sidebar"
-           class="fixed inset-y-0 left-0 z-50 w-64 bg-gray-800 flex flex-col items-start py-6 space-y-8 transition-transform duration-300 ease-in-out transform -translate-x-full
-              md:relative md:translate-x-0 md:w-14 md:hover:w-52 md:transition-[width] md:duration-300 md:ease-in-out md:overflow-hidden md:group "
-    >
-        <div class="text-red-600 text-2xl font-bold mb-6 w-full px-4">⚽</div>
-
-        <nav class="flex flex-col space-y-6 w-full">
-            <button class="flex items-center space-x-4 px-4 hover:text-red-500 w-full">
-                <span class="text-xl shrink-0">🏆</span>
-                <span class="whitespace-nowrap md:max-w-0 md:group-hover:max-w-xs md:transition-[max-width] md:duration-300 md:ease-in-out">Tipprunden</span>
-            </button>
-            <button class="flex items-center space-x-4 px-4 hover:text-red-500 w-full">
-                <span class="text-xl shrink-0">⚽</span>
-                <span class="whitespace-nowrap md:max-w-0 md:group-hover:max-w-xs md:transition-[max-width] md:duration-300 md:ease-in-out">Live Ansicht</span>
-            </button>
-            <button class="flex items-center space-x-4 px-4 hover:text-red-500 w-full">
-                <span class="text-xl shrink-0">🎮</span>
-                <span class="whitespace-nowrap md:max-w-0 md:group-hover:max-w-xs md:transition-[max-width] md:duration-300 md:ease-in-out">Tipprunde erstellen</span>
-            </button>
-        </nav>
-    </aside>
+    <load src="./components/sideBar.html"/>
 
     <div id="main-content" class="flex-1 flex flex-col md:ml-0 transition-all duration-300 ease-in-out">
 
-        <header class="bg-gray-850 flex justify-between items-center px-6 py-4 border-b border-gray-700">
-            <button id="menu-button" class="md:hidden text-white text-2xl mr-4">☰</button>
-            <img src="http://googleusercontent.com/image_collection/image_retrieval/888118098734008396" alt="Logo" class="h-8 mr-4">
-
-            <nav class="flex space-x-6 text-sm">
-                <a href="#" class="hover:text-red-500">Live</a>
-                <a href="#" class="hover:text-red-500">Sport</a>
-            </nav>
-
-            <div class="flex items-center space-x-4 relative">
-                <div class="text-sm text-gray-400 text-right hidden sm:block">
-                    <div class="font-semibold text-white">[Username]</div>
-                </div>
-                <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
-                        class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                        type="button">
-                    <span class="sr-only">Open user menu</span>
-                    <img class="w-10 h-10 rounded-full border-2 border-red-500" src="https://i.pravatar.cc/40"
-                         alt="User">
-                </button>
-
-                <div id="dropdownAvatar"
-                     class="z-50 hidden absolute top-14 right-0 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
-                    <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                        <div>[Username]</div>
-                        <div class="font-medium truncate">maxMusterman@mail.com</div>
-                    </div>
-                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                        aria-labelledby="dropdownUserAvatarButton">
-                        <li>
-                            <a href="#"
-                               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                        </li>
-
-                    </ul>
-                    <div class="py-2">
-                        <button id="logoutBtn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                            Logout
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <load src="./components/navBar.html"/>
 
         <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8 max-w-8xl">
             <header class="text-center mb-8">

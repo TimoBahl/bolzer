@@ -1,5 +1,6 @@
 import { resolve } from "path";
 import { defineConfig } from "vite";
+import injectHTML from 'vite-plugin-html-inject';
 
 export default defineConfig({
   build: {
@@ -16,5 +17,6 @@ export default defineConfig({
   server: {
     open: true, // Öffnet den Browser automatisch, wenn der Server startet
   },
+  plugins: [injectHTML()],
 });
 

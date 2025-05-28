@@ -1,49 +1,22 @@
-import admin from "firebase-admin";
+import { getLastMatchday } from "./firestore/getLastMatchday.js";
+import { loadUserTips } from "./firestore/loadUserTips.js";
+import { evaluateAndSaveTips } from "./firestore/updatePoints.js";
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
-const db = admin.firestore();
-
-async function getLastMatchdayWithMatches() {
-  const now = admin.firestore.Timestamp.now();
-
-  // 1. Letzten Spieltag finden, dessen letzterZeitpunkt <= jetzt ist
-  const snapshot = await db
-    .collection("spieltage")
-    .where("letzterZeitpunkt", "<=", now)
-    .orderBy("letzterZeitpunkt", "desc")
-    .limit(1)
-    .get();
-
-  if (snapshot.empty) {
-    console.log("❌ Kein vergangener Spieltag gefunden.");
-    return null;
+(async () => {
+  const lastMatchday = await getLastMatchday();
+  if (!lastMatchday) {
+    console.log("Kein letzter Spieltag gefunden.");
+    return;
   }
 
-  const spieltagDoc = snapshot.docs[0];
-  const spieltagId = spieltagDoc.id;
+  const spielIds = lastMatchday.spiele.map((s) => s.id.toString());
 
-  // 2. Alle Spiele dieses Spieltags laden
-  const spieleSnapshot = await db
-    .collection("spieltage")
-    .doc(spieltagId)
-    .collection("spiele")
-    .orderBy("datum") // falls du nach Spielzeit sortieren willst
-    .get();
+  console.log(
+    `Lade Tipps für Spieltag ${lastMatchday.spieltagId} mit ${spielIds.length} Spielen`
+  );
 
-  const spiele = spieleSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  const userTips = await loadUserTips(spielIds);
+  await evaluateAndSaveTips(lastMatchday.spiele, userTips);
 
-  return {
-    spieltagId,
-    spiele,
-  };
-}
-
-getLastMatchdayWithMatches();
+  console.log("Tipps bewertet und im Firestore gespeichert");
+})();

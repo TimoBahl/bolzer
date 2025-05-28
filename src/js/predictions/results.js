@@ -36,10 +36,9 @@ export async function loadResultsFromDB(spieltag) {
       li.classList.add(
         "flex",
         "justify-between",
-        "bg-gray-100",
-        "dark:bg-gray-700",
+        "border-b",
+        "border-gray-600",
         "p-2",
-        "rounded"
       );
 
       li.innerHTML = `
@@ -53,12 +52,16 @@ export async function loadResultsFromDB(spieltag) {
             }</span>
           </div>
           <div class="text-gray-700 text-sm dark:text-white">
-            ${
-              spiel.ergebnis
-                ? `<span class="font-semibold">${spiel.ergebnis.toreHeim} : ${spiel.ergebnis.toreGast}</span><br>`
-                : ""
-            }
-            ${datum}
+          <div class="font-bold">
+               ${
+          spiel.ergebnis
+              ? `<span>${spiel.ergebnis.toreHeim} : ${spiel.ergebnis.toreGast}</span><br>`
+              : ""
+      }
+          </div>
+          <div class="text-gray-400">
+                ${datum}    
+          </div>
           </div>
       `;
 

@@ -43,11 +43,11 @@ export async function loadResultsFromDB(spieltag) {
 
       li.innerHTML = `
           <div class="flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
-            <span class="font-semibold text-gray-900 dark:text-white">${
+            <span class="font-semibold  text-sm text-gray-900 dark:text-white">${
               spiel.heim
             }</span>
             <span class="text-gray-600 dark:text-white">-</span>
-            <span class="font-semibold text-gray-900 dark:text-white">${
+            <span class="font-semibold  text-sm text-gray-900 dark:text-white">${
               spiel.gast
             }</span>
           </div>

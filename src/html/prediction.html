@@ -15,6 +15,17 @@
             box-shadow: -5px 0 10px -5px rgba(0, 0, 0, 0.3);
             border-right: 1px solid rgba(75, 85, 99, 0.7);
         }
+        @media (prefers-color-scheme: dark) {
+            #spieltag-select option:hover {
+                background-color: #4A5568; /* Entspricht dark:bg-gray-700 oder ähnlich */
+                color: #FFFFFF; /* Weiße Textfarbe für besseren Kontrast */
+            }
+            /* Optional: Für die ausgewählte Option */
+            #spieltag-select option:checked {
+                background-color: #2D3748; /* Entspricht dark:bg-gray-800 oder ähnliches für die Auswahl */
+                color: #FFFFFF;
+            }
+        }
     </style>
 
 </head>
@@ -42,26 +53,38 @@
                     <div class="w-full flex flex-col lg:flex-row gap-8">
                         <div class="w-full lg:w-1/2">
                             <div class="bg-white rounded-lg shadow-md p-6 dark:bg-gray-800">
-                                <div class="mb-4">
-                                    <label
-                                            for="spieltag-select"
-                                            class="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-200"
+                                <div class="flex justify-between mb-4">
+                                    <h2
+                                            id="tippabgabe-title"
+                                            class="text-xl font-semibold text-gray-700 mb-4 dark:text-gray-200"
                                     >
-                                        Spieltag auswählen:
-                                    </label>
-                                    <select
-                                            id="spieltag-select"
-                                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
-                                    >
-                                        <option value="">Bitte wählen</option>
-                                    </select>
+                                        Tippabgabe
+                                    </h2>
+
+                                    <div class="flex justify-end" id="custom-select-container">
+                                        <button type="button" class="inline-flex justify-between items-center py-2 px-4 text-sm font-medium
+             bg-transparent text-gray-200 dark:text-gray-200 focus:outline-none focus:ring-transparent focus:shadow-none
+           dark:hover:text-blue-400" id="spieltag-button">
+                                            <span id="selected-spieltag">Bitte wählen...</span>
+                                            <svg
+                                                    class="ml-2 h-5 w-5"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20"
+                                                    fill="currentColor"
+                                                    aria-hidden="true"
+                                            >
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </button>
+
+                                        <select
+                                                id="spieltag-select"
+                                                class="hidden shadow appearance-none border rounded py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                                                size="24" >
+                                        </select>
+                                    </div>
                                 </div>
-                                <h2
-                                        id="tippabgabe-title"
-                                        class="text-xl font-semibold text-gray-700 mb-4 dark:text-gray-200"
-                                >
-                                    Tippabgabe
-                                </h2>
+                                <hr class="dark:bg-gray-800 mb-4">
                                 <ul id="tippabgabe-liste" class="space-y-4 dark:text-gray-100"></ul>
                                 <button
                                         id="submitBtn"

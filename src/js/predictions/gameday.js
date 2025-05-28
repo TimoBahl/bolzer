@@ -36,13 +36,13 @@ export async function loadDataForGameday(spieltag, user) {
       li.className = "grid grid-cols-1 md:grid-cols-3 gap-4 items-center";
       li.setAttribute("data-game-id", spielId);
       li.innerHTML = `
-          <div id="homeTeam-${spielId}" class="text-center md:text-left font-semibold text-gray-900 dark:text-white">${spiel.heim}</div>
+          <div id="homeTeam-${spielId}" class="text-center text-sm md:text-left font-semibold text-gray-900 dark:text-white">${spiel.heim}</div>
           <div class="flex justify-center space-x-1">
-               <input type="text" min="0" class="w-10 h-10 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+               <input type="text" min="0" class="w-9 h-9 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                <span class="text-white text-lg p-2">:</span>
-               <input type="text" min="0" class="w-10 h-10 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+               <input type="text" min="0" class="w-9 h-9 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
           </div>
-          <div id="awayTeam-${spielId}" class="text-center md:text-right font-semibold text-gray-900 dark:text-white">${spiel.gast}</div>
+          <div id="awayTeam-${spielId}" class="text-center text-sm md:text-right font-semibold text-gray-900 dark:text-white">${spiel.gast}</div>
         `;
       liste.appendChild(li);
     });

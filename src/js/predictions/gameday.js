@@ -38,9 +38,9 @@ export async function loadDataForGameday(spieltag, user) {
       li.innerHTML = `
           <div id="homeTeam-${spielId}" class="text-center text-sm md:text-left font-semibold text-gray-900 dark:text-white">${spiel.heim}</div>
           <div class="flex justify-center space-x-1">
-               <input type="number" min="0" class="homeTeamResult  w-9 h-9 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" value="${toreHeim}"/>
+               <input type="number" min="0" style="-webkit-appearance: none; -moz-appearance: textfield; margin: 0;" class="homeTeamResult  w-9 h-9 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" value="${toreHeim}"/>
                <span class="text-white text-lg p-2">:</span>
-               <input type="number" min="0" class="awayTeamResult  w-9 h-9 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" value="${toreGast}"/>
+               <input type="number" min="0" style="-webkit-appearance: none; -moz-appearance: textfield; margin: 0;" class="awayTeamResult  w-9 h-9 text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" value="${toreGast}"/>
           </div>
           <div id="awayTeam-${spielId}" class="text-center text-sm md:text-right font-semibold text-gray-900 dark:text-white">${spiel.gast}</div>
         `;

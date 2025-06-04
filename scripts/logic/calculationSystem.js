@@ -12,7 +12,6 @@ export function calculation(ergebnis, tipp) {
 
   if (richtigerSieger && echteDiff === tippDiff) return 3;
   if (richtigerSieger && echteDiff !== tippDiff) return 2;
-  if (!richtigerSieger && echteDiff === tippDiff) return 1;
 
   return 0;
 }

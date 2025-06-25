@@ -16,15 +16,10 @@ Nach jedem Spieltag werden die abgegebenen Tipps durch ein Punktesystem (2, 3, 4
 
 ## Inhaltsverzeichnis
 
-1. [Architektur](#-architektur)  
-2. [Datenmodell](#-datenmodell)  
-3. [Technische Komponenten](#-technische-komponenten)  
-4. [Workflows & Cronjob](#-workflows--cronjob)  
-5. [Bewertungssystem](#-bewertungssystem)  
-6. [Frontend / UI](#-frontend--ui)  
-7. [Setup & Deployment](#-setup--deployment)  
-8. [Entwickler:innen-Hinweise](#-entwicklerinnen-hinweise)  
-9. [Roadmap](#-roadmap)
+1. [Architektur](#-architektur)   
+2. [Workflows & Cronjob](#-workflows--cronjob)  
+3. [Datenmodell](#-datenmodell) 
+4. [Bewertungssystem](#-bewertungssystem)  
 
 ---
 
@@ -36,9 +31,9 @@ Nach jedem Spieltag werden die abgegebenen Tipps durch ein Punktesystem (2, 3, 4
 
 ---
 
-## 🛠️ Workflows & Cronjob
+## Workflows & Cronjob
 
-### 🔄 GitHub Actions – Datenaktualisierung
+### GitHub Actions – Datenaktualisierung
 
 Die Webapplikation nutzt GitHub Actions, um regelmäßig Spieltags- und Tabellendaten automatisiert zu aktualisieren. Dies reduziert die API-Last und sorgt für aktuelle Daten in Firestore.
 

@@ -1,4 +1,4 @@
-# 🥅 Bolzer – Bundesliga-Tippspiel
+# Bolzer – Bundesliga-Tippspiel
 
 ## Projektübersicht
 
@@ -28,10 +28,30 @@ Nach jedem Spieltag werden die abgegebenen Tipps durch ein Punktesystem (2, 3, 4
 
 ---
 
-## 🏗️ Architektur
+## Architektur
 
 - **Frontend**: Vite + JavaScript + Tailwind CSS  
 - **Backend**: Firebase Authentication + Firestore Database  
 - **Automatisierung**: GitHub Actions für geplante Datenaktualisierungen (z. B. jede Nacht)
 
+---
+
+## Datenmodell
+
+**bundesligatabelle**
+
+**Collection**: `bundesligaTabelle`  
+**Dokument-ID**: `"1"`
+
+```json
+{
+  "teamName": "Bayer Leverkusen",
+  "points": 16,
+  "teamGoals": 18,
+  "opponentGoals": 5,
+  "diff": 13,
+  "matches": 6,
+  "teamIconUrl": "https://.../leverkusen.png"
+}
+````
 

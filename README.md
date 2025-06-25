@@ -36,6 +36,25 @@ Nach jedem Spieltag werden die abgegebenen Tipps durch ein Punktesystem (2, 3, 4
 
 ---
 
+## 🛠️ Workflows & Cronjob
+
+### 🔄 GitHub Actions – Datenaktualisierung
+
+Die Webapplikation nutzt GitHub Actions, um regelmäßig Spieltags- und Tabellendaten automatisiert zu aktualisieren. Dies reduziert die API-Last und sorgt für aktuelle Daten in Firestore.
+
+#### Ablauf:
+
+- **Zeitplan:** täglich um **02:00 Uhr (UTC)** via Cronjob
+- **Manueller Start** zusätzlich über `workflow_dispatch` möglich
+- **API-Aufrufe:**
+  - `GET /matchdays` → Spieltage und Spiele
+  - `GET /table` → aktuelle Bundesliga-Tabelle
+- **Speicherung in Firestore:**
+  - `spieltage/{nummer}` mit Subcollection `spiele`
+  - `bundesligaTabelle/{platz}` für Tabelle
+
+---
+
 ## Datenmodell
 
 **bundesligaTabelle**
@@ -114,6 +133,8 @@ Nach jedem Spieltag werden die abgegebenen Tipps durch ein Punktesystem (2, 3, 4
   "timestamp": "2025-05-26T20:06:49Z" 
 }
 ```
+
+---
 
 ## Bewertungssystem
 

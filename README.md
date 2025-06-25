@@ -38,7 +38,7 @@ Nach jedem Spieltag werden die abgegebenen Tipps durch ein Punktesystem (2, 3, 4
 
 ## Datenmodell
 
-**bundesligatabelle**
+**bundesligaTabelle**
 
 **Collection**: `bundesligaTabelle`  
 **Dokument-ID**: `"1"`
@@ -53,5 +53,65 @@ Nach jedem Spieltag werden die abgegebenen Tipps durch ein Punktesystem (2, 3, 4
   "matches": 6,
   "teamIconUrl": "https://.../leverkusen.png"
 }
-````
+```
+
+**spieltage**
+
+**Collection**: `spieltage`
+**Dokument-ID**: `"1"` 
+
+```json
+{
+  "spieltagNummer": 1,
+  "ersterZeitpunkt": "2024-08-20T18:30:00Z",
+  "letzterZeitpunkt": "2024-08-22T20:45:00Z"
+}
+```
+**Subcolection**: `spiele`
+**Subdokument-ID**: `72214``
+
+```json
+{
+  "heim": "FC Bayern",
+  "gast": "RB Leipzig",
+  "datum": "2024-08-20T18:30:00Z",
+  "ergebnis": {
+    "toreHeim": 2,
+    "toreGast": 1
+  }
+}
+```
+
+**users**
+
+**Collection**: `users`
+**Dokument-ID**: `0z9WM3m9GVhz58oBFOhag8S4M4B3``
+
+```json
+{
+  "createdAt": "2025-06-25T08:05:50Z",
+  "displayName": "Timo Bahl",
+  "email": "timo.bahl@freenet.ag",
+  "lastLogin": "2025-06-25T08:05:50Z"
+}
+```
+
+**Subcolection**: `tipps`
+**Subdokument-ID**: `72214`
+
+```json
+{
+  "awayTeam": "VfB Stuttgart",
+  "ergebnis": {
+    "toreGast": 3,
+    "toreHeim": 2
+  },
+  "gameday": "34",
+  "homeTeam": "RB Leipzig",
+  "points": 0,
+  "predictionAway": 1,
+  "predictionHome": 1,
+  "timestamp": "2025-05-26T20:06:49Z" 
+}
+```
 

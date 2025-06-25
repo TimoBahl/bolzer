@@ -85,7 +85,7 @@ Nach jedem Spieltag werden die abgegebenen Tipps durch ein Punktesystem (2, 3, 4
 **users**
 
 **Collection**: `users`
-**Dokument-ID**: `0z9WM3m9GVhz58oBFOhag8S4M4B3``
+**Dokument-ID**: `0z9WM3m9GVhz58oBFOhag8S4M4B3`
 
 ```json
 {
@@ -115,3 +115,11 @@ Nach jedem Spieltag werden die abgegebenen Tipps durch ein Punktesystem (2, 3, 4
 }
 ```
 
+## Bewertungssystem
+
+| Treffer                         | Punkte |
+| ------------------------------- | ------ |
+| Exaktes Ergebnis                | 4      |
+| Richtiger Sieger + Tordifferenz | 3      |
+| Richtiger Sieger                | 2      |
+| Falscher Tipp                   | 0      |
